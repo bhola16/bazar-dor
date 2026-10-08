@@ -1,4 +1,5 @@
 import { IProduct } from "@/type/Type";
+import Link from "next/link";
 
 interface ProductCardProps {
   product: IProduct;
@@ -15,7 +16,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const unit = unitInBangla[product.unit] || product.unit;
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+    <Link
+      href={`/product/${product.slug}`}
+      className="block rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+    >
       {/* Product */}
       <div className="flex items-center gap-3">
         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-green-200 bg-green-50 text-2xl">
@@ -55,7 +59,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           </p>
         )}
       </div>
-    </div>
+    </Link>
   );
 };
 
