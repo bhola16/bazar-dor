@@ -1,14 +1,9 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
+import DateDisplay from "./DateDisplay";
 import Navlinks from "./Navlinks";
 
 const Header = () => {
-  const date = new Date().toLocaleDateString("bn-BD", {
-    dateStyle: "full",
-  });
-
   return (
     <header className="border-b border-gray-200 bg-white">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
@@ -29,7 +24,7 @@ const Header = () => {
               বাজার দর
             </h2>
 
-            <p className="mt-0.5 text-xs text-gray-500 sm:text-sm">{date}</p>
+            <DateDisplay />
           </div>
         </div>
 
@@ -50,6 +45,7 @@ const Header = () => {
           </Link>
         </div>
       </div>
+
       <Navlinks />
     </header>
   );

@@ -1,7 +1,15 @@
-import { INavlinks } from "@/type/Type";
 import Link from "next/link";
 
+interface Category {
+  id: string;
+  slug: string;
+  nameBn: string;
+  icon: string;
+}
+
 const Navlinks = async () => {
+  "use cache";
+
   const res = await fetch(
     "https://api.api-store.workers.dev/api/bazardor/categories",
   );
@@ -10,12 +18,12 @@ const Navlinks = async () => {
     throw new Error("Failed to fetch categories");
   }
 
-  const data: INavlinks[] = await res.json();
+  const data: Category[] = await res.json();
 
   return (
     <nav className="border-t border-gray-100 bg-white">
-      <div className="mx-auto max-w-7xl overflow-x-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex min-w-max items-center justify-start gap-1 py-2 px-3">
+      <div className="mx-auto max-w-7xl overflow-x-auto">
+        <div className="flex min-w-max items-center justify-start gap-1 py-2">
           {data.map((category) => (
             <Link
               key={category.id}
