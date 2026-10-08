@@ -2,18 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import Navlinks from "./Navlinks";
 
 const Header = () => {
-  const [date, setDate] = useState("");
-
-  useEffect(() => {
-    const today = new Date().toLocaleDateString("bn-BD", {
+  const [date] = useState(() =>
+    new Date().toLocaleDateString("bn-BD", {
       dateStyle: "full",
-    });
-
-    setDate(today);
-  }, []);
+    }),
+  );
 
   return (
     <header className="border-b border-gray-200 bg-white">
@@ -56,6 +53,7 @@ const Header = () => {
           </Link>
         </div>
       </div>
+      <Navlinks />
     </header>
   );
 };
