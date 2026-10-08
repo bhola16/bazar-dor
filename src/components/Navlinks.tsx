@@ -8,12 +8,16 @@ const Navlinks = async () => {
     "https://api.abcz.workers.dev/api/bazardor/categories",
   );
 
+  if (!res.ok) {
+    throw new Error("Failed to fetch categories");
+  }
+
   const data: INavlinks[] = await res.json();
 
   return (
     <nav className="border-t border-gray-100 bg-white">
       <div className="mx-auto max-w-7xl overflow-x-auto">
-        <div className="flex min-w-max items-center justify-start gap-1 py-2">
+        <div className="flex ml-10 min-w-max items-center justify-start gap-1 py-2">
           {data.map((category) => (
             <Link
               key={category.id}

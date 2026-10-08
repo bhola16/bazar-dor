@@ -3,6 +3,7 @@ export interface INavlinks {
   slug: string;
   nameBn: string;
   icon: string;
+  category: string;
 }
 
 export interface IProduct {

@@ -1,0 +1,69 @@
+"use client";
+
+import { IProduct } from "@/type/Type";
+import { useState } from "react";
+import ProductCard from "./ProductCard";
+
+interface CategorySortProps {
+  products: IProduct[];
+}
+
+const CategorySort = ({ products }: CategorySortProps) => {
+  const [sort, setSort] = useState("default");
+
+  const sortedProducts = [...products].sort((a, b) => {
+    if (sort === "higher") {
+      return b.today - a.today;
+    }
+
+    if (sort === "lower") {
+      return a.today - b.today;
+    }
+
+    return 0;
+  });
+
+  return (
+    <>
+      {/* Sort */}
+      <div className="mt-5 border rounded-xl border-gray-200 bg-white px-4 py-3 shadow-sm flex justify-end">
+        <div className="flex items-center gap-3  ">
+          <label htmlFor="sort" className="text-sm font-medium text-gray-700">
+            সাজান
+          </label>
+
+          <select
+            id="sort"
+            value={sort}
+            onChange={(e) => setSort(e.target.value)}
+            className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 outline-none focus:border-green-500"
+          >
+            <option value="default">ডিফল্ট</option>
+            <option value="higher">বেশি দাম</option>
+            <option value="lower">কম দাম</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Product Count */}
+      <p className="mt-5 text-lg text-gray-500">
+        মোট {products.length.toLocaleString("bn-BD")}টি পণ্য দেখানো হচ্ছে
+      </p>
+
+      {/* Products */}
+      {sortedProducts.length > 0 ? (
+        <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {sortedProducts.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      ) : (
+        <div className="mt-5 rounded-xl border border-gray-200 bg-white p-8 text-center text-gray-500">
+          এই ক্যাটাগরিতে কোনো পণ্য পাওয়া যায়নি।
+        </div>
+      )}
+    </>
+  );
+};
+
+export default CategorySort;
