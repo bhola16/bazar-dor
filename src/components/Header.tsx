@@ -2,15 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 import Navlinks from "./Navlinks";
 
 const Header = () => {
-  const [date] = useState(() =>
-    new Date().toLocaleDateString("bn-BD", {
-      dateStyle: "full",
-    }),
-  );
+  const date = new Date().toLocaleDateString("bn-BD", {
+    dateStyle: "full",
+  });
 
   return (
     <header className="border-b border-gray-200 bg-white">
