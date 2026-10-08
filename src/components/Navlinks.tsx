@@ -1,24 +1,14 @@
+import { INavlinks } from "@/type/Type";
 import Link from "next/link";
-
-interface Category {
-  id: string;
-  slug: string;
-  nameBn: string;
-  icon: string;
-}
 
 const Navlinks = async () => {
   "use cache";
 
   const res = await fetch(
-    "https://api.api-store.workers.dev/api/bazardor/categories",
+    "https://api.abcz.workers.dev/api/bazardor/categories",
   );
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch categories");
-  }
-
-  const data: Category[] = await res.json();
+  const data: INavlinks[] = await res.json();
 
   return (
     <nav className="border-t border-gray-100 bg-white">
