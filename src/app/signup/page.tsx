@@ -4,21 +4,34 @@ import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export default function SignUpPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Show success toast after returning from social sign-up.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.get("signup") === "success") {
+      toast.success("সফলভাবে সাইন আপ হয়েছে।");
+
+      // Remove the query parameter to prevent repeated toasts.
+      window.history.replaceState({}, "", "/");
+    }
+  }, []);
 
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
 
-    const name = String(formData.get("name") ?? "");
+    const name = String(formData.get("name") ?? "").trim();
     const image = String(formData.get("image") ?? "");
-    const email = String(formData.get("email") ?? "");
+    const email = String(formData.get("email") ?? "").trim();
     const password = String(formData.get("password") ?? "");
     const confirmPassword = String(formData.get("confirmPassword") ?? "");
 
@@ -27,46 +40,60 @@ export default function SignUpPage() {
       return;
     }
 
-    const { data, error } = await authClient.signUp.email({
-      name,
-      image,
-      email,
-      password,
-      callbackURL: "/",
-    });
+    setIsSubmitting(true);
 
-    if (error) {
-      toast.error(error.message || "সাইন আপ করা যায়নি।");
-      return;
-    }
+    try {
+      const { error } = await authClient.signUp.email({
+        name,
+        image,
+        email,
+        password,
+        callbackURL: "/?signup=success",
+      });
 
-    if (data) {
+      if (error) {
+        toast.error(error.message || "সাইন আপ করা যায়নি।");
+        return;
+      }
+
       toast.success("সফলভাবে সাইন আপ হয়েছে।");
       router.push("/");
+    } catch {
+      toast.error("একটি সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   // Google Sign Up
   const handleGoogleSignUp = async () => {
-    const { error } = await authClient.signIn.social({
-      provider: "google",
-      callbackURL: "/",
-    });
+    try {
+      const { error } = await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/?signup=success",
+      });
 
-    if (error) {
-      toast.error(error.message || "Google sign up failed.");
+      if (error) {
+        toast.error(error.message || "Google দিয়ে সাইন আপ করা যায়নি।");
+      }
+    } catch {
+      toast.error("Google দিয়ে সাইন আপ করা যায়নি। আবার চেষ্টা করুন।");
     }
   };
 
   // GitHub Sign Up
   const handleGitHubSignUp = async () => {
-    const { error } = await authClient.signIn.social({
-      provider: "github",
-      callbackURL: "/",
-    });
+    try {
+      const { error } = await authClient.signIn.social({
+        provider: "github",
+        callbackURL: "/?signup=success",
+      });
 
-    if (error) {
-      toast.error(error.message || "GitHub sign up failed.");
+      if (error) {
+        toast.error(error.message || "GitHub দিয়ে সাইন আপ করা যায়নি।");
+      }
+    } catch {
+      toast.error("GitHub দিয়ে সাইন আপ করা যায়নি। আবার চেষ্টা করুন।");
     }
   };
 
@@ -85,50 +112,64 @@ export default function SignUpPage() {
         </div>
 
         {/* Sign Up Card */}
-        <div className="w-full rounded-2xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
+        <div className="w-full rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-300 hover:border-green-200 hover:shadow-lg sm:p-8">
           <form onSubmit={handleOnSubmit} className="space-y-5">
             {/* Name */}
             <div>
-              <label className="text-sm font-semibold text-gray-800">নাম</label>
+              <label
+                htmlFor="signup-name"
+                className="text-sm font-semibold text-gray-800"
+              >
+                নাম
+              </label>
 
               <input
+                id="signup-name"
                 name="name"
                 type="text"
                 autoComplete="name"
                 placeholder="আপনার পুরো নাম লিখুন"
-                className="mt-2 w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-green-600 focus:ring-2 focus:ring-green-100"
+                className="mt-2 w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition-all duration-300 placeholder:text-gray-400 hover:border-green-300 focus:border-green-600 focus:ring-2 focus:ring-green-100"
                 required
               />
             </div>
 
             {/* Email */}
             <div>
-              <label className="text-sm font-semibold text-gray-800">
+              <label
+                htmlFor="signup-email"
+                className="text-sm font-semibold text-gray-800"
+              >
                 ইমেইল
               </label>
 
               <input
+                id="signup-email"
                 name="email"
                 type="email"
                 autoComplete="email"
                 placeholder="আপনার ইমেইল ঠিকানা লিখুন"
-                className="mt-2 w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-green-600 focus:ring-2 focus:ring-green-100"
+                className="mt-2 w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition-all duration-300 placeholder:text-gray-400 hover:border-green-300 focus:border-green-600 focus:ring-2 focus:ring-green-100"
                 required
               />
             </div>
 
             {/* Password */}
             <div>
-              <label className="text-sm font-semibold text-gray-800">
+              <label
+                htmlFor="signup-password"
+                className="text-sm font-semibold text-gray-800"
+              >
                 পাসওয়ার্ড
               </label>
 
               <input
+                id="signup-password"
                 name="password"
                 type={showPassword ? "text" : "password"}
                 autoComplete="new-password"
                 placeholder="কমপক্ষে ৮ অক্ষর"
-                className="mt-2 w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-green-600 focus:ring-2 focus:ring-green-100"
+                className="mt-2 w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition-all duration-300 placeholder:text-gray-400 hover:border-green-300 focus:border-green-600 focus:ring-2 focus:ring-green-100"
                 minLength={8}
                 required
               />
@@ -136,23 +177,27 @@ export default function SignUpPage() {
 
             {/* Confirm Password */}
             <div>
-              <label className="text-sm font-semibold text-gray-800">
+              <label
+                htmlFor="signup-confirm-password"
+                className="text-sm font-semibold text-gray-800"
+              >
                 পাসওয়ার্ড নিশ্চিত করুন
               </label>
 
               <input
+                id="signup-confirm-password"
                 name="confirmPassword"
                 type={showPassword ? "text" : "password"}
                 autoComplete="new-password"
                 placeholder="আবার লিখুন"
-                className="mt-2 w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-green-600 focus:ring-2 focus:ring-green-100"
+                className="mt-2 w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition-all duration-300 placeholder:text-gray-400 hover:border-green-300 focus:border-green-600 focus:ring-2 focus:ring-green-100"
                 minLength={8}
                 required
               />
             </div>
 
             {/* Show Password */}
-            <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-600">
+            <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-600 transition-colors hover:text-green-700">
               <input
                 type="checkbox"
                 checked={showPassword}
@@ -165,9 +210,10 @@ export default function SignUpPage() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full rounded-lg bg-green-700 px-4 py-3 font-semibold text-white transition hover:bg-green-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-700"
+              disabled={isSubmitting}
+              className="w-full rounded-lg bg-green-700 px-4 py-3 font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-green-800 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-700 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-none"
             >
-              অ্যাকাউন্ট তৈরি করুন
+              {isSubmitting ? "অ্যাকাউন্ট তৈরি হচ্ছে..." : "অ্যাকাউন্ট তৈরি করুন"}
             </button>
           </form>
 
@@ -183,7 +229,7 @@ export default function SignUpPage() {
             <button
               onClick={handleGoogleSignUp}
               type="button"
-              className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+              className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm font-medium text-gray-700 transition-all duration-300 hover:-translate-y-0.5 hover:border-green-300 hover:bg-green-50 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
             >
               <Image src="/google.jpeg" alt="Google" width={20} height={20} />
               <span className="whitespace-nowrap">Google দিয়ে চালিয়ে যান</span>
@@ -192,7 +238,7 @@ export default function SignUpPage() {
             <button
               type="button"
               onClick={handleGitHubSignUp}
-              className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+              className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm font-medium text-gray-700 transition-all duration-300 hover:-translate-y-0.5 hover:border-green-300 hover:bg-green-50 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
             >
               <Image src="/github.jpeg" alt="GitHub" width={20} height={20} />
               <span className="whitespace-nowrap">GitHub দিয়ে চালিয়ে যান</span>
@@ -204,7 +250,7 @@ export default function SignUpPage() {
             অ্যাকাউন্ট আছে?{" "}
             <Link
               href="/sign-in"
-              className="font-semibold text-green-700 hover:text-green-800 hover:underline"
+              className="font-semibold text-green-700 transition-colors hover:text-green-800 hover:underline"
             >
               সাইন ইন করুন
             </Link>
@@ -214,7 +260,7 @@ export default function SignUpPage() {
         {/* Back to Home */}
         <Link
           href="/"
-          className="inline-flex items-center justify-center gap-2 text-sm font-medium text-gray-500 transition hover:text-green-700"
+          className="inline-flex items-center justify-center gap-2 text-sm font-medium text-gray-500 transition-all duration-300 hover:-translate-x-1 hover:text-green-700"
         >
           <span aria-hidden="true">←</span>
           হোম পেজে ফিরে যান

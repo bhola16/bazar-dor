@@ -4,58 +4,100 @@ import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export default function SignInPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
+  // Show success toast after Google or GitHub redirects back
+  useEffect(() => {
+    const loginSuccess = sessionStorage.getItem("loginSuccess");
+
+    if (loginSuccess === "true") {
+      sessionStorage.removeItem("loginSuccess");
+      toast.success("সফলভাবে সাইন ইন হয়েছে!");
+    }
+  }, []);
+
+  // Email Sign In
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const formData = new FormData(e.currentTarget);
+    if (isLoading) return;
 
-    const email = String(formData.get("email") ?? "");
-    const password = String(formData.get("password") ?? "");
+    setIsLoading(true);
 
-    const { data, error } = await authClient.signIn.email({
-      email,
-      password,
-      callbackURL: "/",
-    });
+    try {
+      const formData = new FormData(e.currentTarget);
 
-    // Sign in failed
-    if (error) {
-      toast.error(error.message || "Sign in failed.");
-      return;
-    }
+      const email = String(formData.get("email") ?? "");
+      const password = String(formData.get("password") ?? "");
 
-    // Sign in successful
-    if (data) {
-      toast.success("Sign in successful!");
-      router.push("/");
+      const { data, error } = await authClient.signIn.email({
+        email,
+        password,
+        callbackURL: "/",
+      });
+
+      if (error) {
+        toast.error(error.message || "সাইন ইন করা যায়নি।");
+        return;
+      }
+
+      if (data) {
+        toast.success("সফলভাবে সাইন ইন হয়েছে!");
+        router.push("/");
+      } else {
+        toast.error("সাইন ইন করা যায়নি। আবার চেষ্টা করুন।");
+      }
+    } catch {
+      toast.error("একটি সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   // Google Sign In
   const handleGoogleSignIn = async () => {
-    sessionStorage.setItem("loginSuccess", "true");
+    try {
+      sessionStorage.setItem("loginSuccess", "true");
 
-    await authClient.signIn.social({
-      provider: "google",
-      callbackURL: "/",
-    });
+      const { error } = await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/",
+      });
+
+      if (error) {
+        sessionStorage.removeItem("loginSuccess");
+        toast.error(error.message || "Google দিয়ে সাইন ইন করা যায়নি।");
+      }
+    } catch {
+      sessionStorage.removeItem("loginSuccess");
+      toast.error("Google দিয়ে সাইন ইন করতে সমস্যা হয়েছে।");
+    }
   };
 
   // GitHub Sign In
   const handleGitHubSignIn = async () => {
-    sessionStorage.setItem("loginSuccess", "true");
+    try {
+      sessionStorage.setItem("loginSuccess", "true");
 
-    await authClient.signIn.social({
-      provider: "github",
-      callbackURL: "/",
-    });
+      const { error } = await authClient.signIn.social({
+        provider: "github",
+        callbackURL: "/",
+      });
+
+      if (error) {
+        sessionStorage.removeItem("loginSuccess");
+        toast.error(error.message || "GitHub দিয়ে সাইন ইন করা যায়নি।");
+      }
+    } catch {
+      sessionStorage.removeItem("loginSuccess");
+      toast.error("GitHub দিয়ে সাইন ইন করতে সমস্যা হয়েছে।");
+    }
   };
 
   return (
@@ -89,7 +131,7 @@ export default function SignInPage() {
                 id="email"
                 name="email"
                 type="email"
-                autoComplete="off"
+                autoComplete="email"
                 placeholder="আপনার ইমেইল ঠিকানা লিখুন"
                 className="mt-2 w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-green-600 focus:ring-2 focus:ring-green-100"
                 required
@@ -109,7 +151,7 @@ export default function SignInPage() {
                 id="password"
                 name="password"
                 type={showPassword ? "text" : "password"}
-                autoComplete="new-password"
+                autoComplete="current-password"
                 placeholder="আপনার পাসওয়ার্ড লিখুন"
                 className="mt-2 w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-green-600 focus:ring-2 focus:ring-green-100"
                 required
@@ -130,9 +172,10 @@ export default function SignInPage() {
             {/* Sign In Button */}
             <button
               type="submit"
-              className="w-full rounded-lg bg-green-700 px-4 py-3 font-semibold text-white transition hover:bg-green-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-700"
+              disabled={isLoading}
+              className="w-full rounded-lg bg-green-700 px-4 py-3 font-semibold text-white transition hover:bg-green-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-700 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              সাইন ইন করুন
+              {isLoading ? "সাইন ইন হচ্ছে..." : "সাইন ইন করুন"}
             </button>
           </form>
 

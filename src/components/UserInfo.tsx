@@ -13,6 +13,7 @@ const UserInfoPage = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const user = session?.user;
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleSignOut = async () => {
     const { error } = await authClient.signOut();
@@ -26,8 +27,6 @@ const UserInfoPage = () => {
     window.location.href = "/";
   };
 
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -38,97 +37,138 @@ const UserInfoPage = () => {
       }
     };
 
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+      }
+    };
+
     document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscape);
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
     };
   }, []);
 
   return (
-    <div ref={dropdownRef} className="relative">
+    <div
+      ref={dropdownRef}
+      className={`relative ${isOpen ? "z-[110]" : "z-10"}`}
+    >
       {user ? (
         <div>
           {/* Profile Button */}
           <button
             type="button"
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={() => setIsOpen((prev) => !prev)}
             aria-expanded={isOpen}
-            className="flex items-center gap-2 rounded-xl p-2 transition hover:bg-green-50"
+            aria-haspopup="true"
+            className={`group flex items-center gap-2 rounded-xl p-2 transition-all duration-300 ${
+              isOpen
+                ? "bg-green-50 shadow-sm"
+                : "hover:bg-green-50 hover:shadow-sm"
+            }`}
           >
+            {/* Profile Image */}
             {user.image ? (
               <Image
                 src={user.image}
                 alt={user.name || "প্রোফাইল ছবি"}
                 width={40}
                 height={40}
-                className="h-10 w-10 rounded-full object-cover ring-2 ring-green-600"
+                className="h-10 w-10 rounded-full object-cover ring-2 ring-green-600 transition-all duration-300 group-hover:scale-105 group-hover:ring-4 group-hover:ring-green-200"
               />
             ) : (
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-600 font-bold text-white">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-600 font-bold text-white ring-2 ring-transparent transition-all duration-300 group-hover:scale-105 group-hover:ring-4 group-hover:ring-green-200">
                 {user.name?.charAt(0).toUpperCase() || "U"}
               </div>
             )}
 
-            <span className="max-w-28 truncate text-sm font-semibold text-gray-800 sm:max-w-36">
+            <span className="max-w-28 truncate text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-green-700 sm:max-w-36">
               {user.name || "ব্যবহারকারী"}
             </span>
 
             <FaChevronDown
-              className={`h-3 w-3 text-gray-500 transition-transform ${
-                isOpen ? "rotate-180" : ""
+              className={`h-3 w-3 text-gray-500 transition-all duration-300 group-hover:text-green-600 ${
+                isOpen ? "rotate-180 text-green-600" : ""
               }`}
             />
           </button>
 
           {/* Dropdown Menu */}
-          {isOpen && (
-            <div className="absolute right-0 top-full z-50 mt-2 w-64 overflow-hidden rounded-xl border border-gray-100 bg-white shadow-lg">
-              {/* User Details */}
-              <div className="border-b border-gray-100 px-4 py-3">
-                <p className="truncate text-sm font-semibold text-gray-800">
-                  {user.name || "ব্যবহারকারী"}
-                </p>
+          <div
+            className={`absolute right-0 top-full z-[120] mt-2 w-64 origin-top-right overflow-hidden rounded-xl border border-gray-100 bg-white shadow-xl transition-all duration-200 ease-out ${
+              isOpen
+                ? "visible translate-y-0 scale-100 opacity-100"
+                : "invisible -translate-y-2 scale-95 opacity-0"
+            }`}
+            aria-hidden={!isOpen}
+          >
+            {/* User Details */}
+            <div className="group/details border-b border-gray-100 bg-gray-50 px-4 py-4 transition-colors duration-300 hover:bg-green-50">
+              <div className="flex items-center gap-3">
+                {user.image ? (
+                  <Image
+                    src={user.image}
+                    alt={user.name || "প্রোফাইল ছবি"}
+                    width={40}
+                    height={40}
+                    className="h-10 w-10 rounded-full object-cover ring-2 ring-green-500 transition-transform duration-300 group-hover/details:scale-105"
+                  />
+                ) : (
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-600 font-bold text-white transition-transform duration-300 group-hover/details:scale-105">
+                    {user.name?.charAt(0).toUpperCase() || "U"}
+                  </div>
+                )}
 
-                <p className="mt-1 break-all text-xs text-gray-400">
-                  {user.email}
-                </p>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-semibold text-gray-800">
+                    {user.name || "ব্যবহারকারী"}
+                  </p>
+                  <p className="mt-1 break-all text-xs text-gray-500">
+                    {user.email}
+                  </p>
+                </div>
               </div>
-
-              {/* My Profile */}
-              <Link
-                href="/profile"
-                onClick={() => setIsOpen(false)}
-                className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 transition hover:bg-green-50 hover:text-green-700"
-              >
-                <FaUser className="h-4 w-4" />
-                আমার প্রোফাইল
-              </Link>
-
-              {/* Sign Out */}
-              <button
-                type="button"
-                onClick={handleSignOut}
-                className="flex w-full items-center text-red-500 gap-3 px-4 py-3 text-md font-medium transition hover:bg-green-50 "
-              >
-                <FaArrowTurnDown className="h-4 w-4 rotate-90" />
-                সাইন আউট
-              </button>
             </div>
-          )}
+
+            {/* My Profile */}
+            <Link
+              href="/profile"
+              tabIndex={isOpen ? 0 : -1}
+              onClick={() => setIsOpen(false)}
+              className="group flex items-center gap-3 border-b border-gray-100 px-4 py-3 text-sm font-medium text-gray-700 transition-all duration-200 hover:bg-green-50 hover:pl-6 hover:text-green-700 focus-visible:bg-green-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-green-500"
+            >
+              <FaUser className="h-4 w-4 text-gray-400 transition-all duration-200 group-hover:scale-110 group-hover:text-green-600" />
+              <span>আমার প্রোফাইল</span>
+            </Link>
+
+            {/* Sign Out */}
+            <button
+              type="button"
+              tabIndex={isOpen ? 0 : -1}
+              onClick={handleSignOut}
+              className="group/signout flex w-full items-center gap-3 px-4 py-3 text-sm font-medium text-red-500 transition-all duration-200 hover:bg-red-50 hover:pl-6 hover:text-red-700 focus-visible:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-red-500"
+            >
+              <FaArrowTurnDown className="h-4 w-4 rotate-90 transition-transform duration-200 group-hover/signout:translate-x-1" />
+              <span>সাইন আউট</span>
+            </button>
+          </div>
         </div>
       ) : (
         <div className="flex gap-2">
           <Link
             href="/signin"
-            className="btn btn-md border-0 bg-white text-md text-gray-700 transition-all duration-300 hover:-translate-y-0.5 hover:bg-green-50 hover:text-green-700"
+            className="btn btn-md border-0 bg-white text-md text-gray-700 transition-all duration-300 hover:-translate-y-0.5 hover:bg-green-50 hover:text-green-700 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2"
           >
             সাইন ইন
           </Link>
 
           <Link
             href="/signup"
-            className="btn btn-md border-green-600 bg-green-600 text-md text-white transition-all duration-300 hover:-translate-y-0.5 hover:border-green-700 hover:bg-green-700 hover:shadow-md"
+            className="btn btn-md border-green-600 bg-green-600 text-md text-white transition-all duration-300 hover:-translate-y-0.5 hover:border-green-700 hover:bg-green-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2"
           >
             সাইন আপ
           </Link>

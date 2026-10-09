@@ -26,9 +26,12 @@ const CategorySort = ({ products }: CategorySortProps) => {
   return (
     <>
       {/* Sort */}
-      <div className="mt-5 border rounded-xl border-gray-200 bg-white px-4 py-3 shadow-sm flex justify-end">
-        <div className="flex items-center gap-3  ">
-          <label htmlFor="sort" className="text-sm font-medium text-gray-700">
+      <div className="mt-5 flex justify-end rounded-xl border border-gray-200 bg-white px-4 py-3 shadow-sm transition-shadow duration-300 hover:shadow-md">
+        <div className="flex items-center gap-3">
+          <label
+            htmlFor="sort"
+            className="text-sm font-medium text-gray-700 transition-colors duration-300 hover:text-green-600"
+          >
             সাজান
           </label>
 
@@ -36,7 +39,7 @@ const CategorySort = ({ products }: CategorySortProps) => {
             id="sort"
             value={sort}
             onChange={(e) => setSort(e.target.value)}
-            className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 outline-none focus:border-green-500"
+            className="cursor-pointer rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 transition-all duration-300 hover:border-green-400 hover:text-green-700 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-100"
           >
             <option value="default">ডিফল্ট</option>
             <option value="higher">বেশি দাম</option>
@@ -46,8 +49,12 @@ const CategorySort = ({ products }: CategorySortProps) => {
       </div>
 
       {/* Product Count */}
-      <p className="mt-5 text-lg text-gray-500">
-        মোট {products.length.toLocaleString("bn-BD")}টি পণ্য দেখানো হচ্ছে
+      <p className="mt-5 text-lg text-gray-500 transition-colors duration-300 hover:text-green-700">
+        মোট{" "}
+        <span className="inline-block font-semibold text-gray-700 transition-colors duration-300 hover:text-green-600">
+          {products.length.toLocaleString("bn-BD")}
+        </span>
+        টি পণ্য দেখানো হচ্ছে
       </p>
 
       {/* Products */}
@@ -58,8 +65,10 @@ const CategorySort = ({ products }: CategorySortProps) => {
           ))}
         </div>
       ) : (
-        <div className="mt-5 rounded-xl border border-gray-200 bg-white p-8 text-center text-gray-500">
-          এই ক্যাটাগরিতে কোনো পণ্য পাওয়া যায়নি।
+        <div className="mt-5 rounded-xl border border-gray-200 bg-white p-8 text-center transition-all duration-300 hover:border-green-200 hover:shadow-md">
+          <p className="text-gray-500 transition-colors duration-300 hover:text-green-700">
+            এই ক্যাটাগরিতে কোনো পণ্য পাওয়া যায়নি।
+          </p>
         </div>
       )}
     </>
