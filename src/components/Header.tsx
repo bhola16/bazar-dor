@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import DateDisplay from "./DateDisplay";
 import Navlinks from "./Navlinks";
+import UserInfoPage from "./UserInfo";
 
 const Header = () => {
   return (
@@ -28,22 +29,7 @@ const Header = () => {
           </div>
         </Link>
 
-        {/* Auth Buttons */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          <Link
-            href="/signin"
-            className="rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100 hover:text-green-600 sm:px-4"
-          >
-            সাইন ইন
-          </Link>
-
-          <Link
-            href="/signup"
-            className="rounded-lg bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-green-700 hover:shadow-md sm:px-5"
-          >
-            সাইন আপ
-          </Link>
-        </div>
+        <UserInfoPage />
       </div>
 
       <Navlinks />
