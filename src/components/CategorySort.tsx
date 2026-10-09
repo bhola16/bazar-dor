@@ -24,18 +24,9 @@ const CategorySort = ({ products }: CategorySortProps) => {
   });
 
   return (
-    <>
+    <section>
       {/* Sort Controls */}
-      <div className="mt-5 flex flex-col gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 shadow-sm transition-all duration-300 hover:border-green-200 hover:shadow-md sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h2 className="font-semibold text-gray-800 transition-colors duration-300">
-            পণ্য সাজান
-          </h2>
-          <p className="mt-1 text-xs text-gray-500">
-            পণ্যের দাম অনুযায়ী সাজিয়ে দেখুন
-          </p>
-        </div>
-
+      <div className="mt-5 flex flex-col items-end gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 shadow-sm transition-all duration-300 hover:border-green-200 hover:shadow-md sm:flex-row sm:items-center sm:justify-end">
         <div className="flex items-center gap-3">
           <label
             htmlFor="sort"
@@ -101,7 +92,7 @@ const CategorySort = ({ products }: CategorySortProps) => {
           <p className="mt-1 text-sm text-gray-500">পরে আবার চেষ্টা করুন।</p>
         </div>
       )}
-    </>
+    </section>
   );
 };
 
