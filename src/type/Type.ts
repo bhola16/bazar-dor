@@ -41,3 +41,10 @@ export interface IMarket {
 export interface IProductDetails extends IProduct {
   markets?: IMarket[];
 }
+
+export interface IMarket {
+  market: string;
+  division: string;
+  min: number;
+  max: number;
+}

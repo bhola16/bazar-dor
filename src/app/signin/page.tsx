@@ -4,29 +4,22 @@ import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 
 export default function SignInPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  // Show success toast after Google or GitHub redirects back
-  useEffect(() => {
-    const loginSuccess = sessionStorage.getItem("loginSuccess");
-
-    if (loginSuccess === "true") {
-      sessionStorage.removeItem("loginSuccess");
-      toast.success("সফলভাবে সাইন ইন হয়েছে!");
-    }
-  }, []);
+  const [socialLoading, setSocialLoading] = useState<
+    "google" | "github" | null
+  >(null);
 
   // Email Sign In
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (isLoading) return;
+    if (isLoading || socialLoading) return;
 
     setIsLoading(true);
 
@@ -39,7 +32,7 @@ export default function SignInPage() {
       const { data, error } = await authClient.signIn.email({
         email,
         password,
-        callbackURL: "/",
+        callbackURL: "/?auth=success",
       });
 
       if (error) {
@@ -48,8 +41,7 @@ export default function SignInPage() {
       }
 
       if (data) {
-        toast.success("সফলভাবে সাইন ইন হয়েছে!");
-        router.push("/");
+        router.push("/?auth=success");
       } else {
         toast.error("সাইন ইন করা যায়নি। আবার চেষ্টা করুন।");
       }
@@ -60,43 +52,33 @@ export default function SignInPage() {
     }
   };
 
-  // Google Sign In
-  const handleGoogleSignIn = async () => {
+  // Social Sign In
+  const handleSocialSignIn = async (provider: "google" | "github") => {
+    if (isLoading || socialLoading) return;
+
+    setSocialLoading(provider);
+
     try {
+      // The ToastProvider reads this flag after returning from OAuth.
       sessionStorage.setItem("loginSuccess", "true");
 
       const { error } = await authClient.signIn.social({
-        provider: "google",
-        callbackURL: "/",
+        provider,
+        callbackURL: "/?auth=success",
       });
 
       if (error) {
         sessionStorage.removeItem("loginSuccess");
-        toast.error(error.message || "Google দিয়ে সাইন ইন করা যায়নি।");
+        toast.error(
+          error.message ||
+            `${provider === "google" ? "Google" : "GitHub"} দিয়ে সাইন ইন করা যায়নি।`,
+        );
+        setSocialLoading(null);
       }
     } catch {
       sessionStorage.removeItem("loginSuccess");
-      toast.error("Google দিয়ে সাইন ইন করতে সমস্যা হয়েছে।");
-    }
-  };
-
-  // GitHub Sign In
-  const handleGitHubSignIn = async () => {
-    try {
-      sessionStorage.setItem("loginSuccess", "true");
-
-      const { error } = await authClient.signIn.social({
-        provider: "github",
-        callbackURL: "/",
-      });
-
-      if (error) {
-        sessionStorage.removeItem("loginSuccess");
-        toast.error(error.message || "GitHub দিয়ে সাইন ইন করা যায়নি।");
-      }
-    } catch {
-      sessionStorage.removeItem("loginSuccess");
-      toast.error("GitHub দিয়ে সাইন ইন করতে সমস্যা হয়েছে।");
+      toast.error("সাইন ইন করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+      setSocialLoading(null);
     }
   };
 
@@ -172,7 +154,7 @@ export default function SignInPage() {
             {/* Sign In Button */}
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || socialLoading !== null}
               className="w-full rounded-lg bg-green-700 px-4 py-3 font-semibold text-white transition hover:bg-green-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-700 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isLoading ? "সাইন ইন হচ্ছে..." : "সাইন ইন করুন"}
@@ -190,20 +172,30 @@ export default function SignInPage() {
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <button
               type="button"
-              onClick={handleGoogleSignIn}
-              className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+              disabled={isLoading || socialLoading !== null}
+              onClick={() => handleSocialSignIn("google")}
+              className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <Image src="/google.jpeg" alt="Google" width={20} height={20} />
-              <span className="whitespace-nowrap">Google দিয়ে চালিয়ে যান</span>
+              <span className="whitespace-nowrap">
+                {socialLoading === "google"
+                  ? "সংযোগ হচ্ছে..."
+                  : "Google দিয়ে চালিয়ে যান"}
+              </span>
             </button>
 
             <button
               type="button"
-              onClick={handleGitHubSignIn}
-              className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+              disabled={isLoading || socialLoading !== null}
+              onClick={() => handleSocialSignIn("github")}
+              className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <Image src="/github.jpeg" alt="GitHub" width={20} height={20} />
-              <span className="whitespace-nowrap">GitHub দিয়ে চালিয়ে যান</span>
+              <span className="whitespace-nowrap">
+                {socialLoading === "github"
+                  ? "সংযোগ হচ্ছে..."
+                  : "GitHub দিয়ে চালিয়ে যান"}
+              </span>
             </button>
           </div>
 

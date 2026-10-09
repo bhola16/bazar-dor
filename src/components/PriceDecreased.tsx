@@ -4,11 +4,9 @@ import ProductCard from "./ProductCard";
 const PriceDecreased = async () => {
   "use cache";
 
-  const res = await fetch("https://api.abcz.workers.dev/api/bazardor/products");
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch products");
-  }
+  const res = await fetch(
+    "https://api.api-store.workers.dev/api/bazardor/products",
+  );
 
   const data: IProduct[] = await res.json();
 

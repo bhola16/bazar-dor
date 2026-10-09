@@ -9,12 +9,8 @@ const CategoryProducts = async ({ category }: CategoryProductsProps) => {
   "use cache";
 
   const res = await fetch(
-    `https://api.abcz.workers.dev/api/bazardor/products?category=${category}`,
+    `https://api.api-store.workers.dev/api/bazardor/categories/${category}`,
   );
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch category products");
-  }
 
   const data: IProduct[] = await res.json();
 

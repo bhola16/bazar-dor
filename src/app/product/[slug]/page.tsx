@@ -1,4 +1,3 @@
-
 import MarketPriceTable from "@/components/MarketPriceTable";
 import {
   IMarket,
@@ -24,12 +23,8 @@ const ProductDetailsPage = async ({ params }: ProductDetailsPageProps) => {
   const { slug } = await params;
 
   const res = await fetch(
-    "https://api.abcz.workers.dev/api/bazardor/products",
+    "https://api.api-store.workers.dev/api/bazardor/products",
   );
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch products");
-  }
 
   // Read the products response only once
   const products: IProduct[] = await res.json();

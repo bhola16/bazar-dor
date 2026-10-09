@@ -1,13 +1,7 @@
 "use client";
 
+import { IMarket } from "@/type/Type";
 import { useState } from "react";
-
-interface IMarket {
-  market: string;
-  division: string;
-  min: number;
-  max: number;
-}
 
 interface MarketPriceTableProps {
   markets: IMarket[];

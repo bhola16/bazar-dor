@@ -4,28 +4,22 @@ import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 
 export default function SignUpPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [socialLoading, setSocialLoading] = useState<
+    "google" | "github" | null
+  >(null);
 
-  // Show success toast after returning from social sign-up.
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-
-    if (params.get("signup") === "success") {
-      toast.success("সফলভাবে সাইন আপ হয়েছে।");
-
-      // Remove the query parameter to prevent repeated toasts.
-      window.history.replaceState({}, "", "/");
-    }
-  }, []);
-
+  // Email Sign Up
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (isSubmitting || socialLoading) return;
 
     const formData = new FormData(e.currentTarget);
 
@@ -48,7 +42,7 @@ export default function SignUpPage() {
         image,
         email,
         password,
-        callbackURL: "/?signup=success",
+        callbackURL: "/?auth=success",
       });
 
       if (error) {
@@ -56,8 +50,8 @@ export default function SignUpPage() {
         return;
       }
 
-      toast.success("সফলভাবে সাইন আপ হয়েছে।");
-      router.push("/");
+      // ToastProvider displays the success toast after navigation.
+      router.push("/?auth=signup-success");
     } catch {
       toast.error("একটি সমস্যা হয়েছে। আবার চেষ্টা করুন।");
     } finally {
@@ -65,35 +59,28 @@ export default function SignUpPage() {
     }
   };
 
-  // Google Sign Up
-  const handleGoogleSignUp = async () => {
+  // Google and GitHub Sign Up
+  const handleSocialSignUp = async (provider: "google" | "github") => {
+    if (isSubmitting || socialLoading) return;
+
+    setSocialLoading(provider);
+
     try {
       const { error } = await authClient.signIn.social({
-        provider: "google",
-        callbackURL: "/?signup=success",
+        provider,
+        callbackURL: "/?auth=success",
       });
 
       if (error) {
-        toast.error(error.message || "Google দিয়ে সাইন আপ করা যায়নি।");
+        toast.error(
+          error.message ||
+            `${provider === "google" ? "Google" : "GitHub"} দিয়ে সাইন আপ করা যায়নি।`,
+        );
+        setSocialLoading(null);
       }
     } catch {
-      toast.error("Google দিয়ে সাইন আপ করা যায়নি। আবার চেষ্টা করুন।");
-    }
-  };
-
-  // GitHub Sign Up
-  const handleGitHubSignUp = async () => {
-    try {
-      const { error } = await authClient.signIn.social({
-        provider: "github",
-        callbackURL: "/?signup=success",
-      });
-
-      if (error) {
-        toast.error(error.message || "GitHub দিয়ে সাইন আপ করা যায়নি।");
-      }
-    } catch {
-      toast.error("GitHub দিয়ে সাইন আপ করা যায়নি। আবার চেষ্টা করুন।");
+      toast.error("সাইন আপ করা যায়নি। আবার চেষ্টা করুন।");
+      setSocialLoading(null);
     }
   };
 
@@ -210,10 +197,12 @@ export default function SignUpPage() {
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || socialLoading !== null}
               className="w-full rounded-lg bg-green-700 px-4 py-3 font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-green-800 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-700 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-none"
             >
-              {isSubmitting ? "অ্যাকাউন্ট তৈরি হচ্ছে..." : "অ্যাকাউন্ট তৈরি করুন"}
+              {isSubmitting
+                ? "অ্যাকাউন্ট তৈরি হচ্ছে..."
+                : "অ্যাকাউন্ট তৈরি করুন"}
             </button>
           </form>
 
@@ -224,24 +213,34 @@ export default function SignUpPage() {
             <div className="h-px flex-1 bg-gray-200" />
           </div>
 
-          {/* Social Login Buttons */}
+          {/* Social Sign Up Buttons */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <button
-              onClick={handleGoogleSignUp}
+              onClick={() => handleSocialSignUp("google")}
               type="button"
-              className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm font-medium text-gray-700 transition-all duration-300 hover:-translate-y-0.5 hover:border-green-300 hover:bg-green-50 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
+              disabled={isSubmitting || socialLoading !== null}
+              className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm font-medium text-gray-700 transition-all duration-300 hover:-translate-y-0.5 hover:border-green-300 hover:bg-green-50 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <Image src="/google.jpeg" alt="Google" width={20} height={20} />
-              <span className="whitespace-nowrap">Google দিয়ে চালিয়ে যান</span>
+              <span className="whitespace-nowrap">
+                {socialLoading === "google"
+                  ? "সংযোগ হচ্ছে..."
+                  : "Google দিয়ে চালিয়ে যান"}
+              </span>
             </button>
 
             <button
               type="button"
-              onClick={handleGitHubSignUp}
-              className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm font-medium text-gray-700 transition-all duration-300 hover:-translate-y-0.5 hover:border-green-300 hover:bg-green-50 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
+              onClick={() => handleSocialSignUp("github")}
+              disabled={isSubmitting || socialLoading !== null}
+              className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm font-medium text-gray-700 transition-all duration-300 hover:-translate-y-0.5 hover:border-green-300 hover:bg-green-50 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <Image src="/github.jpeg" alt="GitHub" width={20} height={20} />
-              <span className="whitespace-nowrap">GitHub দিয়ে চালিয়ে যান</span>
+              <span className="whitespace-nowrap">
+                {socialLoading === "github"
+                  ? "সংযোগ হচ্ছে..."
+                  : "GitHub দিয়ে চালিয়ে যান"}
+              </span>
             </button>
           </div>
 
