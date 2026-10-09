@@ -248,7 +248,7 @@ export default function SignUpPage() {
           <p className="mt-6 text-center text-sm text-gray-600">
             অ্যাকাউন্ট আছে?{" "}
             <Link
-              href="/sign-in"
+              href="/signin"
               className="font-semibold text-green-700 transition-colors hover:text-green-800 hover:underline"
             >
               সাইন ইন করুন

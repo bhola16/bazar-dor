@@ -203,7 +203,7 @@ export default function SignInPage() {
           <p className="mt-6 text-center text-sm text-gray-600">
             অ্যাকাউন্ট নেই?{" "}
             <Link
-              href="/sign-up"
+              href="/signup"
               className="font-semibold text-green-700 hover:text-green-800 hover:underline"
             >
               সাইন আপ করুন
