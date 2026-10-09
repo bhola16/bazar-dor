@@ -13,8 +13,8 @@ const NavlinksClient = ({ categories }: NavlinksClientProps) => {
 
   return (
     <nav className="border-t border-gray-100 bg-white transition-colors duration-300">
-      <div className="mx-auto max-w-7xl overflow-x-auto">
-        <div className="ml-10 flex min-w-max items-center justify-start gap-1 py-2">
+      <div className="mx-auto max-w-7xl overflow-x-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex min-w-max items-center justify-start gap-1 py-2">
           {categories.map((category) => {
             const href = `/category/${category.slug}`;
             const isActive =
@@ -41,6 +41,7 @@ const NavlinksClient = ({ categories }: NavlinksClientProps) => {
 
                 <span className="relative">
                   {category.nameBn}
+
                   <span
                     className={`absolute -bottom-1 left-0 h-0.5 rounded-full bg-green-600 transition-transform duration-300 ${
                       isActive

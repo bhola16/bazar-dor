@@ -1,21 +1,25 @@
-const LoadingPage = () => {
+const CategoryLoading = () => {
   return (
     <main className="min-h-[75vh] bg-gray-50 px-4 py-8">
       <div className="mx-auto max-w-7xl">
-        {/* Page Heading Skeleton */}
-        <div className="animate-pulse">
-          <div className="h-8 w-48 rounded-lg bg-gray-200" />
-          <div className="mt-3 h-4 w-72 max-w-full rounded bg-gray-200" />
+        {/* Category Header Skeleton */}
+        <div className="animate-pulse rounded-xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
+          <div className="flex items-center gap-4">
+            <div className="h-16 w-16 shrink-0 rounded-xl bg-gray-200" />
+
+            <div className="flex-1 space-y-3">
+              <div className="h-7 w-48 max-w-full rounded bg-gray-200" />
+              <div className="h-4 w-64 max-w-full rounded bg-gray-100" />
+            </div>
+          </div>
         </div>
 
-        {/* Product Count and Sort Skeleton */}
-        <div className="mt-8 flex animate-pulse items-center justify-between gap-4">
-          <div className="h-5 w-40 rounded bg-gray-200" />
-          <div className="h-10 w-36 rounded-lg bg-gray-200" />
-        </div>
+        {/* Product Count Skeleton */}
+        <div className="mt-5 h-4 w-48 animate-pulse rounded bg-gray-200" />
 
-        {/* Product Card Skeletons */}
-        <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+
+        {/* Product Cards Skeleton */}
+        <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 6 }, (_, index) => (
             <div
               key={index}
@@ -43,12 +47,12 @@ const LoadingPage = () => {
           ))}
         </div>
 
-        <p className="mt-8 text-center text-sm font-medium text-gray-500">
-          পণ্যের তথ্য লোড হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...
+        <p className="mt-8 text-center text-sm text-gray-500">
+          ক্যাটাগরির পণ্যের তথ্য লোড হচ্ছে...
         </p>
       </div>
     </main>
   );
 };
 
-export default LoadingPage;
+export default CategoryLoading;

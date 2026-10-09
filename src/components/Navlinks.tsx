@@ -8,6 +8,10 @@ const Navlinks = async () => {
     "https://api.api-store.workers.dev/api/bazardor/categories",
   );
 
+  if (!res.ok) {
+    throw new Error("Failed to fetch categories");
+  }
+
   const data: INavlinks[] = await res.json();
 
   return <NavlinksClient categories={data} />;
