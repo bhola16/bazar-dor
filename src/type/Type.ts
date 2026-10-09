@@ -24,3 +24,20 @@ export interface IProduct {
     pct: number;
   };
 }
+
+export interface ProductDetailsPageProps {
+  params: Promise<{
+    slug: string;
+  }>;
+}
+
+export interface IMarket {
+  market: string;
+  division: string;
+  min: number;
+  max: number;
+}
+
+export interface IProductDetails extends IProduct {
+  markets?: IMarket[];
+}
