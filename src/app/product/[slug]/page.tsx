@@ -6,6 +6,7 @@ import {
   ProductDetailsPageProps,
 } from "@/type/Type";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 export const instant = false;
 
@@ -33,19 +34,7 @@ const ProductDetailsPage = async ({ params }: ProductDetailsPageProps) => {
   const product = products.find((item) => item.slug === slug);
 
   if (!product) {
-    return (
-      <section className="mx-auto mt-10 w-full max-w-7xl">
-        <div className="rounded-xl border border-gray-200 bg-white p-10 text-center shadow-sm">
-          <h1 className="text-2xl font-bold text-gray-900">
-            পণ্যটি পাওয়া যায়নি
-          </h1>
-
-          <p className="mt-2 text-gray-500">
-            আপনি যে পণ্যটি খুঁজছেন সেটি পাওয়া যায়নি।
-          </p>
-        </div>
-      </section>
-    );
+    notFound();
   }
 
   // Fetch details for the selected product

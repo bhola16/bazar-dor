@@ -1,10 +1,18 @@
+"use client";
 
 import Image from "next/image";
 import DateDisplay from "./DateDisplay";
 
 const Banner = () => {
+  const handleScroll = () => {
+    document.getElementById("all-products")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
   return (
-    <section className="mx-auto pb-8  mt-10 max-w-7xl rounded-2xl border border-gray-200 bg-white px-5 py-4 shadow-sm">
+    <section className="mx-auto mt-10 max-w-7xl rounded-2xl border border-gray-200 bg-white px-5 py-4 pb-8 shadow-sm">
       {/* Date */}
       <div className="inline-block rounded-2xl bg-green-100/50 px-4 py-3 font-bold text-green-600">
         <DateDisplay />
@@ -22,7 +30,11 @@ const Banner = () => {
             বিস্তারিত, গড়, সর্বনিম্ন-সর্বাধিক এবং দামের পরিবর্তন এক জায়গায়।
           </p>
 
-          <button className="mt-6 rounded-xl bg-green-600 px-5 py-3 font-semibold text-white transition hover:bg-green-700">
+          <button
+            type="button"
+            onClick={handleScroll}
+            className="mt-6 rounded-xl bg-green-600 px-5 py-3 font-semibold text-white transition hover:bg-green-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+          >
             সব পণ্য দেখুন
           </button>
         </div>

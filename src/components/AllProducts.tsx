@@ -13,7 +13,10 @@ const AllProducts = async () => {
   const data: IProduct[] = await res.json();
 
   return (
-    <section className="mx-auto mt-10 mb-10 max-w-7xl">
+    <section
+      id="all-products"
+      className="mx-auto mt-10 mb-10 max-w-7xl scroll-mt-6"
+    >
       <h2 className="text-2xl font-bold text-gray-900">সব পণ্য</h2>
 
       <p className="mt-1 text-sm text-gray-500">

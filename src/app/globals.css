@@ -2,7 +2,7 @@
 @plugin "daisyui";
 
 :root {
-  --background: #f5f5f5;
+  --background: #f5f5f5ce;
   --foreground: #171717;
 }
 body {

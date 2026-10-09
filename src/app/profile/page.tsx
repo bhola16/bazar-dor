@@ -1,6 +1,7 @@
 "use client";
 
 import { authClient } from "@/lib/auth-client";
+import Image from "next/image";
 import { useState } from "react";
 import { FaArrowTurnDown } from "react-icons/fa6";
 import { toast } from "react-toastify";
@@ -34,7 +35,7 @@ const ProfilePage = () => {
           </p>
 
           <a
-            href="/sign-in"
+            href="/signin"
             className="mt-5 inline-flex rounded-lg bg-green-600 px-5 py-2.5 font-medium text-white transition hover:bg-green-700"
           >
             সাইন ইন
@@ -43,11 +44,6 @@ const ProfilePage = () => {
       </div>
     );
   }
-
-  const handleEdit = () => {
-    setName(user.name || "");
-    setIsEditing(true);
-  };
 
   const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -109,9 +105,11 @@ const ProfilePage = () => {
           <div className="flex items-center gap-3 sm:gap-5">
             {/* Profile Image */}
             {user.image ? (
-              <img
+              <Image
                 src={user.image}
                 alt={user.name || "প্রোফাইল ছবি"}
+                width={64}
+                height={64}
                 className="h-14 w-14 shrink-0 rounded-full object-cover sm:h-16 sm:w-16"
               />
             ) : (
@@ -130,7 +128,6 @@ const ProfilePage = () => {
                 {user.email}
               </p>
             </div>
-
             {/* Arrow and Sign Out */}
             <div className="flex shrink-0 items-center gap-1 rounded-2xl border border-red-700 px-3  hover:bg-green-50 ">
               <button
