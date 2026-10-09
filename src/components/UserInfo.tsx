@@ -3,12 +3,14 @@
 import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { FaChevronDown, FaUser } from "react-icons/fa";
+import { FaArrowTurnDown } from "react-icons/fa6";
 import { toast } from "react-toastify";
 
 const UserInfoPage = () => {
-  const router = useRouter();
   const { data: session } = authClient.useSession();
+  const [isOpen, setIsOpen] = useState(false);
 
   const user = session?.user;
 
@@ -21,56 +23,112 @@ const UserInfoPage = () => {
     }
 
     toast.success("সফলভাবে সাইন আউট হয়েছে।");
-    router.push("/");
-    router.refresh();
+    window.location.href = "/";
   };
 
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="absolute right-4 hidden items-center gap-2 sm:flex">
+    <div ref={dropdownRef} className="relative">
       {user ? (
-        <div className="flex items-center gap-3">
-          {/* Profile Image */}
-          <Link href="/profile" aria-label="প্রোফাইল দেখুন">
+        <div>
+          {/* Profile Button */}
+          <button
+            type="button"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-expanded={isOpen}
+            className="flex items-center gap-2 rounded-xl p-2 transition hover:bg-green-50"
+          >
             {user.image ? (
-              <div className="h-10 w-10 overflow-hidden rounded-full ring-2 ring-green-600 ring-offset-2 ring-offset-white">
-                <Image
-                  src={user.image}
-                  alt={user.name || "User"}
-                  className="h-full w-full object-cover"
-                />
-              </div>
+              <Image
+                src={user.image}
+                alt={user.name || "প্রোফাইল ছবি"}
+                width={40}
+                height={40}
+                className="h-10 w-10 rounded-full object-cover ring-2 ring-green-600"
+              />
             ) : (
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-600 font-bold text-white ring-2 ring-green-600 ring-offset-2 ring-offset-white">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-600 font-bold text-white">
                 {user.name?.charAt(0).toUpperCase() || "U"}
               </div>
             )}
-          </Link>
 
-          {/* User Name */}
-          <h2 className="max-w-32 truncate font-semibold text-gray-800">
-            {user.name}
-          </h2>
+            <span className="max-w-28 truncate text-sm font-semibold text-gray-800 sm:max-w-36">
+              {user.name || "ব্যবহারকারী"}
+            </span>
 
-          {/* Sign Out Button */}
-          <button
-            onClick={handleSignOut}
-            className="btn btn-sm border-green-600 bg-green-600 px-4 text-white transition-all duration-300 hover:-translate-y-0.5 hover:border-green-700 hover:bg-green-700 hover:shadow-md"
-          >
-            সাইন আউট
+            <FaChevronDown
+              className={`h-3 w-3 text-gray-500 transition-transform ${
+                isOpen ? "rotate-180" : ""
+              }`}
+            />
           </button>
+
+          {/* Dropdown Menu */}
+          {isOpen && (
+            <div className="absolute right-0 top-full z-50 mt-2 w-64 overflow-hidden rounded-xl border border-gray-100 bg-white shadow-lg">
+              {/* User Details */}
+              <div className="border-b border-gray-100 px-4 py-3">
+                <p className="truncate text-sm font-semibold text-gray-800">
+                  {user.name || "ব্যবহারকারী"}
+                </p>
+
+                <p className="mt-1 break-all text-xs text-gray-400">
+                  {user.email}
+                </p>
+              </div>
+
+              {/* My Profile */}
+              <Link
+                href="/profile"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 transition hover:bg-green-50 hover:text-green-700"
+              >
+                <FaUser className="h-4 w-4" />
+                আমার প্রোফাইল
+              </Link>
+
+              {/* Sign Out */}
+              <button
+                type="button"
+                onClick={handleSignOut}
+                className="flex w-full items-center text-red-500 gap-3 px-4 py-3 text-md font-medium transition hover:bg-green-50 "
+              >
+                <FaArrowTurnDown className="h-4 w-4 rotate-90" />
+                সাইন আউট
+              </button>
+            </div>
+          )}
         </div>
       ) : (
         <div className="flex gap-2">
           <Link
             href="/signin"
-            className="btn btn-sm border-0 text-md bg-white px-4 text-gray-700 transition-all duration-300 hover:-translate-y-0.5 hover:bg-green-50 hover:text-green-700"
+            className="btn btn-md border-0 bg-white text-md text-gray-700 transition-all duration-300 hover:-translate-y-0.5 hover:bg-green-50 hover:text-green-700"
           >
             সাইন ইন
           </Link>
 
           <Link
             href="/signup"
-            className="btn btn-sm text-md border-green-600 bg-green-600 px-4 text-white transition-all duration-300 hover:-translate-y-0.5 hover:border-green-700 hover:bg-green-700 hover:shadow-md"
+            className="btn btn-md border-green-600 bg-green-600 text-md text-white transition-all duration-300 hover:-translate-y-0.5 hover:border-green-700 hover:bg-green-700 hover:shadow-md"
           >
             সাইন আপ
           </Link>

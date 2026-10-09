@@ -1,6 +1,7 @@
 "use client";
 
 import { authClient } from "@/lib/auth-client";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -10,7 +11,7 @@ export default function SignInPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleOnSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
@@ -35,6 +36,26 @@ export default function SignInPage() {
       toast.success("Sign in successful!");
       router.push("/");
     }
+  };
+
+  // Google Sign In
+  const handleGoogleSignIn = async () => {
+    sessionStorage.setItem("loginSuccess", "true");
+
+    await authClient.signIn.social({
+      provider: "google",
+      callbackURL: "/",
+    });
+  };
+
+  // GitHub Sign In
+  const handleGitHubSignIn = async () => {
+    sessionStorage.setItem("loginSuccess", "true");
+
+    await authClient.signIn.social({
+      provider: "github",
+      callbackURL: "/",
+    });
   };
 
   return (
@@ -114,6 +135,34 @@ export default function SignInPage() {
               সাইন ইন করুন
             </button>
           </form>
+
+          {/* Or Divider */}
+          <div className="my-5 flex items-center gap-3">
+            <div className="h-px flex-1 bg-gray-200" />
+            <span className="text-sm text-gray-400">অথবা</span>
+            <div className="h-px flex-1 bg-gray-200" />
+          </div>
+
+          {/* Social Login Buttons */}
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <button
+              type="button"
+              onClick={handleGoogleSignIn}
+              className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+            >
+              <Image src="/google.jpeg" alt="Google" width={20} height={20} />
+              <span className="whitespace-nowrap">Google দিয়ে চালিয়ে যান</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleGitHubSignIn}
+              className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+            >
+              <Image src="/github.jpeg" alt="GitHub" width={20} height={20} />
+              <span className="whitespace-nowrap">GitHub দিয়ে চালিয়ে যান</span>
+            </button>
+          </div>
 
           {/* Sign Up Link */}
           <p className="mt-6 text-center text-sm text-gray-600">

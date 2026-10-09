@@ -132,20 +132,13 @@ const ProfilePage = () => {
             </div>
 
             {/* Arrow and Sign Out */}
-            <div className="flex shrink-0 items-center gap-0 rounded-2xl border border-red-500 p-0.5">
-              <button
-                type="button"
-                onClick={handleEdit}
-                aria-label="প্রোফাইল সম্পাদনা করুন"
-                className="flex h-9 w-9 items-center justify-center rounded-full text-red-500 transition-all duration-200 hover:bg-red-50 hover:text-red-700 active:scale-90"
-              >
-                <FaArrowTurnDown className="h-4 w-4 rotate-90 transition-transform duration-200" />
-              </button>
+            <div className="flex shrink-0 items-center gap-1 rounded-2xl border border-red-700 px-3  hover:bg-green-50 ">
               <button
                 type="button"
                 onClick={handleSignOut}
-                className="rounded-xl px-3 py-2 text-xs font-bold text-red-500 transition-all duration-200 hover:bg-red-50 hover:text-red-700 active:scale-95 sm:px-4 sm:text-sm"
+                className="flex w-full items-center font-bold  text-red-500 gap-3 px-4 py-3 text-md transition"
               >
+                <FaArrowTurnDown className="h-4 w-4 rotate-90" />
                 সাইন আউট
               </button>
             </div>
