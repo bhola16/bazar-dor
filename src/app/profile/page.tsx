@@ -82,8 +82,7 @@ const ProfilePage = () => {
       return;
     }
 
-    toast.success("সফলভাবে সাইন আউট হয়েছে।");
-    window.location.href = "/";
+    window.location.href = "/?auth=signed-out";
   };
 
   return (
