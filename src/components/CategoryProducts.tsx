@@ -10,9 +10,9 @@ const CategoryProducts = async ({ category }: CategoryProductsProps) => {
 
   const [productsRes, categoriesRes] = await Promise.all([
     fetch(
-      `https://api.abcz.workers.dev/api/bazardor/products?category=${encodeURIComponent(category)}`,
+      `https://openapi.programming-hero.com/api/bazardor/products?category=${encodeURIComponent(category)}`,
     ),
-    fetch("https://api.abcz.workers.dev/api/bazardor/categories"),
+    fetch("https://openapi.programming-hero.com/api/bazardor/categories"),
   ]);
 
   if (!productsRes.ok) {
@@ -26,12 +26,10 @@ const CategoryProducts = async ({ category }: CategoryProductsProps) => {
   const productsData: unknown = await productsRes.json();
   const categoriesData: unknown = await categoriesRes.json();
 
-  // Ensure the products response is an array.
   const data: IProduct[] = Array.isArray(productsData)
     ? (productsData as IProduct[])
     : [];
 
-  // Ensure the categories response is an array.
   const categories: INavlinks[] = Array.isArray(categoriesData)
     ? (categoriesData as INavlinks[])
     : [];

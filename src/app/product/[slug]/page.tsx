@@ -18,7 +18,7 @@ const ProductDetailsPage = async ({ params }: ProductDetailsPageProps) => {
   const { slug } = await params;
 
   const res = await fetch(
-    "https://api.abcz.workers.dev/api/bazardor/products",
+    "https://openapi.programming-hero.com/api/bazardor/products",
   );
 
   if (!res.ok) {
@@ -80,7 +80,9 @@ const ProductDetailsPage = async ({ params }: ProductDetailsPageProps) => {
 
         <span>&gt;</span>
 
-        <span className="font-medium text-md text-gray-700 hover:text-green-600">{product.nameBn}</span>
+        <span className="font-medium text-md text-gray-700 hover:text-green-600">
+          {product.nameBn}
+        </span>
       </div>
 
       {/* Product Details */}
