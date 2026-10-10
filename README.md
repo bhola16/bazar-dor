@@ -181,11 +181,16 @@ It includes product cards, category listings, market-price tables, navigation co
 ## 🔗 API
 
 BazarDor uses a REST API to retrieve product and category information.
+## 🔗 API Configuration
 
 **Base API URL:**
 
-`https://api.api-store.workers.dev/api/bazardor` (Sometime not working)
-`https://api.abcz.workers.dev/api/bazardor` (This project used it)
+- **Primary API:** `https://api.abcz.workers.dev/api/bazardor`
+- **Alternative API:** `https://api.api-store.workers.dev/api/bazardor`
+
+> **Note:** This project currently uses the `api.abcz.workers.dev` endpoint. The alternative endpoint (`api.api-store.workers.dev`) may occasionally be unavailable.
+
+
 
 The API provides product and category data used throughout the application. The availability and completeness of market-price information depend on the API response.
 
