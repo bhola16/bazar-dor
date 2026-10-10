@@ -26,13 +26,12 @@ export default function SignInPage() {
     try {
       const formData = new FormData(e.currentTarget);
 
-      const email = String(formData.get("email") ?? "");
+      const email = String(formData.get("email") ?? "").trim();
       const password = String(formData.get("password") ?? "");
 
-      const { data, error } = await authClient.signIn.email({
+      const { error } = await authClient.signIn.email({
         email,
         password,
-        callbackURL: "/?auth=success",
       });
 
       if (error) {
@@ -40,43 +39,39 @@ export default function SignInPage() {
         return;
       }
 
-      if (data) {
-        router.push("/?auth=success");
-      } else {
-        toast.error("সাইন ইন করা যায়নি। আবার চেষ্টা করুন।");
-      }
-    } catch {
+      toast.success("সফলভাবে সাইন ইন হয়েছে!");
+
+      router.replace("/");
+    } catch (error) {
+      console.error("Email sign-in error:", error);
       toast.error("একটি সমস্যা হয়েছে। আবার চেষ্টা করুন।");
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Social Sign In
+  // Google and GitHub Sign In
   const handleSocialSignIn = async (provider: "google" | "github") => {
     if (isLoading || socialLoading) return;
 
     setSocialLoading(provider);
 
     try {
-      // The ToastProvider reads this flag after returning from OAuth.
-      sessionStorage.setItem("loginSuccess", "true");
-
       const { error } = await authClient.signIn.social({
         provider,
-        callbackURL: "/?auth=success",
+        callbackURL: `${window.location.origin}/?auth=success`,
       });
 
       if (error) {
-        sessionStorage.removeItem("loginSuccess");
         toast.error(
           error.message ||
             `${provider === "google" ? "Google" : "GitHub"} দিয়ে সাইন ইন করা যায়নি।`,
         );
+
         setSocialLoading(null);
       }
-    } catch {
-      sessionStorage.removeItem("loginSuccess");
+    } catch (error) {
+      console.error(`${provider} sign-in error:`, error);
       toast.error("সাইন ইন করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।");
       setSocialLoading(null);
     }
@@ -85,7 +80,6 @@ export default function SignInPage() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-green-50 px-4 py-10">
       <div className="flex w-full max-w-md flex-col gap-6">
-        {/* Heading */}
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
             সাইন ইন
@@ -97,10 +91,8 @@ export default function SignInPage() {
           </p>
         </div>
 
-        {/* Sign In Card */}
         <div className="w-full rounded-2xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
           <form onSubmit={handleOnSubmit} className="space-y-5">
-            {/* Email */}
             <div>
               <label
                 htmlFor="email"
@@ -120,7 +112,6 @@ export default function SignInPage() {
               />
             </div>
 
-            {/* Password */}
             <div>
               <label
                 htmlFor="password"
@@ -140,7 +131,6 @@ export default function SignInPage() {
               />
             </div>
 
-            {/* Show Password */}
             <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-600">
               <input
                 type="checkbox"
@@ -151,7 +141,6 @@ export default function SignInPage() {
               পাসওয়ার্ড দেখান
             </label>
 
-            {/* Sign In Button */}
             <button
               type="submit"
               disabled={isLoading || socialLoading !== null}
@@ -161,14 +150,12 @@ export default function SignInPage() {
             </button>
           </form>
 
-          {/* Or Divider */}
           <div className="my-5 flex items-center gap-3">
             <div className="h-px flex-1 bg-gray-200" />
             <span className="text-sm text-gray-400">অথবা</span>
             <div className="h-px flex-1 bg-gray-200" />
           </div>
 
-          {/* Social Login Buttons */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <button
               type="button"
@@ -177,6 +164,7 @@ export default function SignInPage() {
               className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <Image src="/google.jpeg" alt="Google" width={20} height={20} />
+
               <span className="whitespace-nowrap">
                 {socialLoading === "google"
                   ? "সংযোগ হচ্ছে..."
@@ -191,6 +179,7 @@ export default function SignInPage() {
               className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <Image src="/github.jpeg" alt="GitHub" width={20} height={20} />
+
               <span className="whitespace-nowrap">
                 {socialLoading === "github"
                   ? "সংযোগ হচ্ছে..."
@@ -199,7 +188,6 @@ export default function SignInPage() {
             </button>
           </div>
 
-          {/* Sign Up Link */}
           <p className="mt-6 text-center text-sm text-gray-600">
             অ্যাকাউন্ট নেই?{" "}
             <Link
@@ -211,7 +199,6 @@ export default function SignInPage() {
           </p>
         </div>
 
-        {/* Back to Home */}
         <Link
           href="/"
           className="inline-flex items-center justify-center gap-2 text-sm font-medium text-gray-500 transition hover:text-green-700"

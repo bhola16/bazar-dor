@@ -1,37 +1,39 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function ToastProvider() {
+  const [ready, setReady] = useState(false);
+
   useEffect(() => {
+    setReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!ready) return;
+
     const params = new URLSearchParams(window.location.search);
     const authStatus = params.get("auth");
 
-    // Check whether a social sign-in was initiated.
-    const loginSuccess = sessionStorage.getItem("loginSuccess");
-
-    if (authStatus === "signup-success") {
-      toast.success("সফলভাবে সাইন আপ হয়েছে।");
+    if (authStatus === "success" || authStatus === "oauth-success") {
+      toast.success("সফলভাবে সাইন ইন হয়েছে!");
+    } else if (
+      authStatus === "signup-success" ||
+      authStatus === "social-signup-success"
+    ) {
+      toast.success(
+        authStatus === "social-signup-success"
+          ? "সোশ্যাল অ্যাকাউন্ট দিয়ে সফলভাবে সাইন আপ হয়েছে!"
+          : "সফলভাবে সাইন আপ হয়েছে।",
+      );
     } else if (authStatus === "required") {
       toast.info("এই পেজটি দেখতে প্রথমে সাইন ইন করুন।");
-    } else if (authStatus === "success") {
-      toast.success("সফলভাবে সাইন ইন হয়েছে!");
     } else if (authStatus === "signed-out") {
       toast.success("আপনি সফলভাবে সাইন আউট করেছেন!");
-    } else if (loginSuccess === "true") {
-      sessionStorage.removeItem("loginSuccess");
-
-      const timeoutId = window.setTimeout(() => {
-        toast.success("সফলভাবে সাইন ইন হয়েছে!");
-      }, 100);
-
-      // Clean up the timeout if the component unmounts.
-      return () => window.clearTimeout(timeoutId);
     }
 
-    // Remove the auth parameter to prevent repeated notifications.
     if (authStatus) {
       params.delete("auth");
 
@@ -42,12 +44,12 @@ export default function ToastProvider() {
 
       window.history.replaceState(window.history.state, "", newUrl);
     }
-  }, []);
+  }, [ready]);
 
   return (
     <ToastContainer
       position="bottom-right"
-      autoClose={2000}
+      autoClose={2500}
       closeOnClick
       pauseOnHover
       newestOnTop

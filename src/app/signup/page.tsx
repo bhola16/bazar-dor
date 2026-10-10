@@ -42,7 +42,6 @@ export default function SignUpPage() {
         image,
         email,
         password,
-        callbackURL: "/?auth=success",
       });
 
       if (error) {
@@ -50,8 +49,10 @@ export default function SignUpPage() {
         return;
       }
 
-      // ToastProvider displays the success toast after navigation.
-      router.push("/?auth=signup-success");
+      // ToastProvider must be mounted in the root layout.
+      toast.success("আপনার অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে!");
+
+      router.replace("/");
     } catch {
       toast.error("একটি সমস্যা হয়েছে। আবার চেষ্টা করুন।");
     } finally {
@@ -68,7 +69,7 @@ export default function SignUpPage() {
     try {
       const { error } = await authClient.signIn.social({
         provider,
-        callbackURL: "/?auth=success",
+        callbackURL: `${window.location.origin}/?auth=social-signup-success`,
       });
 
       if (error) {
