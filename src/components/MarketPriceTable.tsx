@@ -61,9 +61,9 @@ const MarketPriceTable = ({ markets }: MarketPriceTableProps) => {
                         setSelectedMarket(isSelected ? null : marketKey);
                       }
                     }}
-                    className={`cursor-pointer border-b-2 border-black text-md text-black transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-green-600 ${
+                    className={`cursor-pointer border-b-3 border-zinc-400 text-md text-black transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-green-600 ${
                       isSelected
-                        ? "bg-green-200 shadow-inner"
+                        ? "bg-green-300 shadow-inner"
                         : index % 2 === 1
                           ? "bg-green-50 hover:bg-green-100"
                           : "bg-white hover:bg-green-50"
@@ -141,6 +141,7 @@ const MarketPriceTable = ({ markets }: MarketPriceTableProps) => {
                 selectedMarket,
             )?.market
           }
+          
         </p>
       )}
     </section>
