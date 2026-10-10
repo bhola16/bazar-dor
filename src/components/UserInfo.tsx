@@ -3,6 +3,7 @@
 import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { FaChevronDown, FaUser } from "react-icons/fa";
 import { FaArrowTurnDown } from "react-icons/fa6";
@@ -10,6 +11,7 @@ import { toast } from "react-toastify";
 
 const UserInfoPage = () => {
   const { data: session } = authClient.useSession();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
   const user = session?.user;
@@ -24,7 +26,7 @@ const UserInfoPage = () => {
     }
 
     toast.success("সফলভাবে সাইন আউট হয়েছে।");
-    window.location.href = "/";
+    router.push("/?auth=signed-out");
   };
 
   useEffect(() => {

@@ -131,14 +131,14 @@ export default function SignInPage() {
               />
             </div>
 
-            <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-600">
+            <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-600 transition-colors hover:text-green-700">
               <input
                 type="checkbox"
                 checked={showPassword}
                 onChange={(e) => setShowPassword(e.target.checked)}
                 className="h-4 w-4 accent-green-700"
               />
-              পাসওয়ার্ড দেখান
+              পাসওয়ার্ড দেখান
             </label>
 
             <button
