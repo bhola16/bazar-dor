@@ -160,21 +160,21 @@ It includes product cards, category listings, market-price tables, navigation co
 
 ## 🛠️ Technologies Used
 
-| Technology | Purpose |
-|---|---|
-| Next.js 16 | React framework and App Router |
-| React 19 | User interface development |
-| TypeScript | Type-safe application code |
-| Tailwind CSS 4 | Styling and responsive layouts |
-| DaisyUI | UI styling components |
-| Better Auth | Authentication and session management |
-| MongoDB | Authentication data storage |
-| Mongoose | MongoDB object modeling |
-| React Toastify | Toast notifications |
-| Lucide React | Icons |
-| React Icons | Additional icons |
-| REST API | Product, category, and market-price data |
-| Vercel | Application deployment |
+| Technology     | Purpose                                  |
+| -------------- | ---------------------------------------- |
+| Next.js 16     | React framework and App Router           |
+| React 19       | User interface development               |
+| TypeScript     | Type-safe application code               |
+| Tailwind CSS 4 | Styling and responsive layouts           |
+| DaisyUI        | UI styling components                    |
+| Better Auth    | Authentication and session management    |
+| MongoDB        | Authentication data storage              |
+| Mongoose       | MongoDB object modeling                  |
+| React Toastify | Toast notifications                      |
+| Lucide React   | Icons                                    |
+| React Icons    | Additional icons                         |
+| REST API       | Product, category, and market-price data |
+| Vercel         | Application deployment                   |
 
 ---
 
@@ -338,7 +338,7 @@ npm run dev
 
 ### 7. Open the application
 
-Visit [http://localhost:3000](http://localhost:3000) in your browser.
+Visit http://localhost:3000 in your browser.
 
 ---
 
