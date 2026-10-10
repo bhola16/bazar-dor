@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
-
-First, run the development server:
+🛒 বাজার দর | BazarDor
+BazarDor (বাজার দর) is a responsive Bengali web application that helps users explore daily market prices in Bangladesh. Browse products by category, compare prices across markets, and check which products have become more or less expensive.
+🌐 Live Demo
+Live Website: https://bazar-dor-kohl.vercel.app/
+GitHub Repository: https://github.com/bhola16/bazar-dor
+✨ Key Features
+Today's Market Prices — Browse everyday products and view their current prices in Bangladeshi taka.
+Category-Based Browsing — Explore products through category navigation.
+Price Change Tracking — See products whose prices have increased or decreased, with percentage changes.
+Market-by-Market Comparison — View minimum, maximum, and average prices for available markets and divisions on product detail pages.
+Product Details — Open individual product pages to review today's price, yesterday's price, and other available price information.
+Authentication — Create an account or sign in using email and password, Google, or GitHub.
+Profile Management — View account details and update the profile name.
+Responsive Bengali Interface — Use the site across desktop and mobile screen sizes.
+🧰 Technologies Used
+Next.js 16 — App Router and server-rendered React application
+React 19 — User interface
+TypeScript — Type-safe application code
+Tailwind CSS 4 — Styling and responsive layouts
+DaisyUI — UI styling components
+Better Auth — Authentication and session management
+MongoDB / Mongoose — Database integration
+React Toastify — Toast notifications
+Lucide React & React Icons — Icons
+REST API — Product, category, and market-price data
+🚀 Getting Started
+Prerequisites
+Node.js
+npm
+Access to the required API and authentication environment variables
+Installation
+Clone the repository:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+   git clone https://github.com/bhola16/bazar-dor.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Move into the project directory:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+   cd bazar-dor
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Install dependencies:
 
-## Learn More
+```bash
+   npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+Create a `.env.local` file in the project root and configure the environment variables required by the authentication setup:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```env
+   MONGODB_URL=your_mongodb_connection_string
+   BETTER_AUTH_URL=http://localhost:3000
+   GOOGLE_CLIENT_ID=your_google_client_id
+   GOOGLE_CLIENT_SECRET=your_google_client_secret
+   GITHUB_CLIENT_ID=your_github_client_id
+   GITHUB_CLIENT_SECRET=your_github_client_secret
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Replace the example values with your own credentials. Configure the OAuth provider callback URLs to match your local or deployed application URL. Never commit real secrets to GitHub.
+Start the development server:
 
-## Deploy on Vercel
+```bash
+   npm run dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Open http://localhost:3000 in your browser.
+📜 Available Scripts
+Command Description
+`npm run dev` Start the development server
+`npm run build` Build the application for production
+`npm run start` Start the production server
+`npm run lint` Run ESLint
+👨‍💻 Author
+Bhola Bala
+GitHub: https://github.com/bhola16
+Repository: https://github.com/bhola16/bazar-dor
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+Making daily market-price information easier to access in Bangladesh. 🇧🇩
