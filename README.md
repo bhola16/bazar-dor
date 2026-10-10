@@ -10,7 +10,7 @@ The application helps users explore daily market prices in Bangladesh, browse pr
 
 ## 📂 GitHub Repository
 
-**GitHub:** [BazarDor](https://github.com/bhola16/bazar-dor)
+- **GitHub:** [BazarDor](https://github.com/bhola16/bazar-dor)
 
 ---
 
@@ -18,20 +18,20 @@ The application helps users explore daily market prices in Bangladesh, browse pr
 
 ### 1. 🏠 Homepage and Product Overview
 
-The homepage provides an overview of the BazarDor application and its market-price information.
+The homepage provides an overview of BazarDor and its market-price information.
 
-Users can explore product listings, discover different product categories, and navigate to detailed product information.
-
-The homepage includes reusable UI components for the banner, product listings, navigation, and price movement sections.
+- Explore product listings and categories.
+- Navigate to individual product details.
+- View price movement sections.
+- Browse reusable banner, navigation, and product components.
 
 ### 2. 🛍️ Product Library
 
-Users can browse products and explore their available market-price information.
+Browse products and explore their available market-price information.
 
-Product listings provide information such as:
+Product listings can include:
 
-- Product name
-- Product category
+- Product name and category
 - Available price information
 - Price movement, where available
 - Links to detailed product pages
@@ -40,74 +40,54 @@ Product and category information is retrieved from the BazarDor REST API.
 
 ### 3. 📂 Browse Products by Category
 
-BazarDor allows users to explore products through category-based navigation.
+Explore products through category-based navigation.
 
-The category page provides a focused view of products belonging to a selected category.
+- Open a category.
+- Browse products within the selected category.
+- Sort category products.
+- Open individual product detail pages.
 
-Users can:
-
-- Open a category
-- Browse products within that category
-- Sort category products
-- Open individual product detail pages
-
-Each category uses a dynamic route, allowing the application to display different categories through a shared page structure.
+Dynamic routes allow different categories to share a common page structure.
 
 ### 4. 📈 Price Increase Tracking
 
-The application provides a section for products whose prices have increased.
-
-Users can explore products with upward price movements and use the available product information to understand recent market changes.
+Explore products whose prices have increased to understand upward market-price movements.
 
 The `PriceIncreased.tsx` component handles this section of the interface.
 
 ### 5. 📉 Price Decrease Tracking
 
-BazarDor also highlights products whose prices have decreased.
+Discover products whose prices have decreased and explore their available market-price information.
 
-This feature helps users identify products with downward price movements and explore their current market-price information.
-
-The `PriceDecreased.tsx` component is responsible for displaying this section.
+The `PriceDecreased.tsx` component displays this section.
 
 ### 6. 📊 Market Price Comparison
 
-The application provides market-price information for individual products.
+The `MarketPriceTable.tsx` component presents available market-price information for individual products.
 
-The market-price comparison interface is implemented through the `MarketPriceTable.tsx` component.
-
-Depending on the information returned by the API, users can review available market prices and compare price values across markets.
-
-This helps users explore differences in product prices rather than relying on a single price value.
+Users can review price values across markets when comparison data is available through the API.
 
 ### 7. 📄 Product Details
 
-Users can open an individual product to view more detailed information.
+Individual product pages provide more detailed information, which may include:
 
-The product details page uses a dynamic slug-based route.
-
-Product detail pages are designed to present information such as:
-
-- Product name and details
+- Product name and description
 - Current price information
 - Previous price information, where available
 - Market-price comparisons
-- Relevant product information returned by the API
+- Other product information returned by the API
 
-The product detail page is implemented in `src/app/product/[slug]/page.tsx`.
+Product detail pages use a dynamic slug-based route:
+
+`src/app/product/[slug]/page.tsx`
 
 ### 8. ↕️ Category Product Sorting
 
-BazarDor includes sorting functionality for category-based product listings.
-
-The `CategorySort.tsx` component provides the sorting interface.
-
-This helps users organize product listings according to the sorting options supported by the application.
+The `CategorySort.tsx` component provides sorting controls for category-based product listings, helping users organize products using the available sorting options.
 
 ### 9. 🔐 User Authentication
 
 BazarDor uses **Better Auth** for authentication and session management.
-
-The application includes dedicated sign-in and sign-up pages.
 
 Supported authentication methods include:
 
@@ -115,130 +95,86 @@ Supported authentication methods include:
 - Google sign-in
 - GitHub sign-in
 
-Google and GitHub authentication require valid OAuth credentials and properly configured callback URLs.
-
-Authentication is configured through the client and server modules in `src/lib`.
+Google and GitHub authentication require valid OAuth credentials and correctly configured callback URLs.
 
 ### 10. 📝 User Registration
 
 New users can create an account through the sign-up page.
 
-The registration interface provides an entry point for users who want to access the application's account features.
-
-The registration page is implemented in:
-
-```text
-src/app/signup/page.tsx
-```
+`src/app/signup/page.tsx`
 
 ### 11. 👤 User Profile
 
-BazarDor provides a profile page for account-related information.
+BazarDor provides a profile page for account-related information and a `UserInfo.tsx` component for displaying user information.
 
-The profile interface is implemented in:
+`src/app/profile/page.tsx`
 
-```text
-src/app/profile/page.tsx
-```
-
-The application includes a `UserInfo.tsx` component for displaying user information.
-
-The available profile functionality depends on the authentication state and the information supported by the application.
+Available profile functionality depends on the user's authentication state and the information supported by the application.
 
 ### 12. 🧭 Navigation
 
-BazarDor uses reusable navigation components to help users move between different parts of the application.
-
-The navigation system includes:
+Reusable navigation components provide consistent navigation across the application.
 
 - `Header.tsx` — Main header
 - `Navlinks.tsx` — Navigation links
 - `NavlinksClient.tsx` — Client-side navigation behavior
 - `Footer.tsx` — Footer section
 
-These components help maintain a consistent interface across the application's pages.
-
 ### 13. 🔔 Toast Notifications
 
-BazarDor includes a toast notification provider to display feedback to users.
-
-The `ToastProvider.tsx` component integrates the notification interface into the application.
-
-Toast notifications provide a way to communicate relevant actions and application feedback without requiring users to navigate away from the current page.
+The `ToastProvider.tsx` component integrates toast notifications to communicate relevant actions and application feedback.
 
 ### 14. ⏳ Loading States
 
-The application includes loading UI for the homepage and dynamic pages.
+Loading interfaces help communicate when content is being retrieved or prepared.
 
-Loading components help communicate that content is being prepared or retrieved.
+BazarDor includes loading UI for:
 
-BazarDor includes:
+- The homepage
+- Category pages
+- Product detail pages
 
-- Application-level loading UI
-- Category page loading UI
-- Product detail page loading UI
-
-These loading interfaces are implemented through the relevant `loading.tsx` files.
+These interfaces are implemented through the relevant `loading.tsx` files.
 
 ### 15. ❌ Custom 404 Page
 
-BazarDor includes a custom not-found page for routes or resources that cannot be found.
+The application includes a custom not-found page for unavailable routes or resources.
 
-The page is implemented in:
-
-```text
-src/app/not-found.tsx
-```
-
-This provides a dedicated interface instead of relying solely on the default not-found experience.
+`src/app/not-found.tsx`
 
 ### 16. 📱 Responsive Design
 
-BazarDor is built with a responsive interface using Tailwind CSS.
+Built with Tailwind CSS, BazarDor adapts to different screen sizes.
 
-The application is designed to support different screen sizes.
-
-- 📱 **Mobile:** Product browsing and navigation on smaller screens
-- 📲 **Tablet:** Adaptive layouts and spacing
-- 💻 **Desktop:** Expanded layouts for product listings and market-price information
-
-Reusable components help maintain a consistent user experience throughout the application.
+- **Mobile:** Compact navigation and mobile-friendly product browsing
+- **Tablet:** Flexible layouts and adaptive spacing
+- **Desktop:** Expanded product listings and market-price information
 
 ### 17. 🎨 Modern User Interface
 
-BazarDor combines reusable UI components with Tailwind CSS and DaisyUI.
+The interface combines reusable components with Tailwind CSS and DaisyUI.
 
-The interface includes:
-
-- Product cards
-- Category-based product listings
-- Market-price tables
-- Navigation components
-- Price movement sections
-- Loading states
-- Toast notifications
-- Authentication pages
-- Profile interface
-
-The design focuses on making market-price information easier to browse and understand.
+It includes product cards, category listings, market-price tables, navigation components, price movement sections, loading states, toast notifications, authentication pages, and a profile interface.
 
 ---
 
 ## 🛠️ Technologies Used
 
-- **Next.js 16** — React framework and App Router
-- **React 19** — User interface development
-- **TypeScript** — Type-safe application code
-- **Tailwind CSS 4** — Styling and responsive layouts
-- **DaisyUI** — UI styling components
-- **Better Auth** — Authentication and session management
-- **MongoDB** — Authentication data storage
-- **Mongoose** — MongoDB object modeling dependency
-- **React Toastify** — Toast notifications
-- **Lucide React** — Icons
-- **React Icons** — Additional icons
-- **REST API** — Product, category, and market-price data
-- **Vercel** — Application deployment
+| Technology | Purpose |
+|---|---|
+| Next.js 16 | React framework and App Router |
+| React 19 | User interface development |
+| TypeScript | Type-safe application code |
+| Tailwind CSS 4 | Styling and responsive layouts |
+| DaisyUI | UI styling components |
+| Better Auth | Authentication and session management |
+| MongoDB | Authentication data storage |
+| Mongoose | MongoDB object modeling |
+| React Toastify | Toast notifications |
+| Lucide React | Icons |
+| React Icons | Additional icons |
+| REST API | Product, category, and market-price data |
+| Vercel | Application deployment |
 
 ---
 
@@ -246,14 +182,11 @@ The design focuses on making market-price information easier to browse and under
 
 BazarDor uses a REST API to retrieve product and category information.
 
-### Base API URL
+**Base API URL:**
 
-```text
-https://api.api-store.workers.dev/api/bazardor
-```
-The application uses these endpoints to retrieve product and category data.
+`https://api.api-store.workers.dev/api/bazardor`
 
-**Note:** The availability and completeness of product and market-price information depend on the API response.
+The API provides product and category data used throughout the application. The availability and completeness of market-price information depend on the API response.
 
 ---
 
@@ -261,47 +194,36 @@ The application uses these endpoints to retrieve product and category data.
 
 ```text
 bazar-dor/
-│
 ├── public/
 │   ├── bazar-hero.png
 │   ├── github.jpeg
 │   ├── google.jpeg
 │   └── logo-icon.png
-│
 ├── src/
-│   │
 │   ├── app/
-│   │   │
 │   │   ├── api/
 │   │   │   └── auth/
 │   │   │       └── [...all]/
 │   │   │           └── route.ts
-│   │   │
 │   │   ├── category/
 │   │   │   └── [category]/
 │   │   │       ├── loading.tsx
 │   │   │       └── page.tsx
-│   │   │
 │   │   ├── product/
 │   │   │   └── [slug]/
 │   │   │       ├── loading.tsx
 │   │   │       └── page.tsx
-│   │   │
 │   │   ├── profile/
 │   │   │   └── page.tsx
-│   │   │
 │   │   ├── signin/
 │   │   │   └── page.tsx
-│   │   │
 │   │   ├── signup/
 │   │   │   └── page.tsx
-│   │   │
 │   │   ├── layout.tsx
 │   │   ├── page.tsx
 │   │   ├── loading.tsx
 │   │   ├── not-found.tsx
 │   │   └── globals.css
-│   │
 │   ├── components/
 │   │   ├── AllProducts.tsx
 │   │   ├── Banner.tsx
@@ -319,16 +241,12 @@ bazar-dor/
 │   │   ├── ProductCard.tsx
 │   │   ├── ToastProvider.tsx
 │   │   └── UserInfo.tsx
-│   │
 │   ├── lib/
 │   │   ├── auth-client.ts
 │   │   └── auth.ts
-│   │
 │   ├── proxy.ts
-│   │
 │   └── type/
 │       └── Type.ts
-│
 ├── .gitignore
 ├── AGENTS.md
 ├── eslint.config.mjs
@@ -340,6 +258,8 @@ bazar-dor/
 └── README.md
 ```
 
+---
+
 ## ⚙️ Installation and Setup
 
 ### Prerequisites
@@ -348,7 +268,8 @@ Before running BazarDor locally, make sure you have:
 
 - [Node.js](https://nodejs.org/)
 - npm
-- A MongoDB database or MongoDB connection string
+- Git
+- A MongoDB database or connection string
 - Google OAuth credentials if Google sign-in is required
 - GitHub OAuth credentials if GitHub sign-in is required
 
@@ -372,9 +293,9 @@ npm install
 
 ### 4. Configure environment variables
 
-Create a `.env.local` file in the project root.
+Create a `.env` file in the project root and configure the variables required by your application.
 
-Add the following configuration:
+Example:
 
 ```env
 # MongoDB connection
@@ -393,11 +314,11 @@ GITHUB_CLIENT_ID=your_github_client_id
 GITHUB_CLIENT_SECRET=your_github_client_secret
 ```
 
-Replace the placeholder values with your actual credentials.
+Replace the placeholder values with your actual credentials. Confirm the required environment variable names in your authentication configuration before running the application.
 
-The authentication configuration uses the MongoDB database named `bazar-dor07`.
+The authentication configuration uses the MongoDB database named `bazar-dor07`, according to the current project configuration described here.
 
-**Important:** Keep your database connection string and OAuth secrets private. Never commit `.env.local` or credentials to GitHub.
+**Important:** Keep your database connection string and OAuth secrets private. Never commit `.env` files or credentials to GitHub.
 
 ### 5. Configure OAuth providers
 
@@ -405,8 +326,8 @@ If you want to enable Google or GitHub sign-in:
 
 1. Create an OAuth application with the relevant provider.
 2. Obtain the client ID and client secret.
-3. Configure the provider's callback URL according to your Better Auth setup.
-4. Add the credentials to `.env.local`.
+3. Configure the callback URL according to your Better Auth setup.
+4. Add the required credentials to your environment variables.
 5. Ensure the application URL matches your local or deployed environment.
 
 ### 6. Start the development server
@@ -417,62 +338,23 @@ npm run dev
 
 ### 7. Open the application
 
-Visit:
-
-```text
-http://localhost:3000
-```
-
-The BazarDor application should now be available in your browser.
+Visit [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
 ## 📦 Production Build
 
-To create an optimized production build:
+Create an optimized production build:
 
 ```bash
 npm run build
 ```
 
-To start the production server:
+Start the production server:
 
 ```bash
 npm run start
 ```
-
-To run the linter:
-
-```bash
-npm run lint
-```
-
----
-
-## 📱 Responsive Design
-
-BazarDor uses Tailwind CSS to create responsive layouts for product browsing, category navigation, and market-price information.
-
-### Mobile
-
-- Responsive product listings
-- Compact navigation
-- Mobile-friendly authentication pages
-- Adaptable product detail layouts
-- Readable market-price information
-
-### Tablet
-
-- Adaptive product layouts
-- Responsive spacing
-- Flexible navigation and content sections
-
-### Desktop
-
-- Expanded product listings
-- Wider content layouts
-- Detailed product information
-- Market-price comparison tables
 
 ---
 
@@ -510,8 +392,6 @@ BazarDor uses Better Auth to manage authentication.
 
 ### Authentication Methods
 
-The application supports:
-
 - Email and password
 - Google OAuth
 - GitHub OAuth
@@ -525,8 +405,8 @@ src/lib/auth.ts
 src/lib/auth-client.ts
 ```
 
-- `auth.ts` — Server-side authentication configuration.
-- `auth-client.ts` — Client-side authentication integration.
+- `auth.ts` — Server-side authentication configuration
+- `auth-client.ts` — Client-side authentication integration
 
 The authentication API route is located at:
 
@@ -536,7 +416,7 @@ src/app/api/auth/[...all]/route.ts
 
 MongoDB is used for authentication data storage through the configured database connection.
 
-For production deployments, use the appropriate production database and OAuth credentials. Do not expose secrets through client-side code.
+For production deployments, use the appropriate production database and OAuth credentials. Never expose secrets through client-side code.
 
 ---
 
@@ -546,7 +426,7 @@ BazarDor retrieves product and category information from its REST API.
 
 ### Product Data
 
-The product listing interface uses the API to obtain the available products and their information.
+The product listing interface retrieves available products and their information from the API.
 
 ### Category Data
 
@@ -554,9 +434,7 @@ The category interface organizes products according to the category information 
 
 ### Market-Price Information
 
-Product detail pages display available price information and market comparisons.
-
-The accuracy and freshness of displayed prices depend on the information supplied by the API.
+Product detail pages display available price information and market comparisons. The accuracy and freshness of displayed prices depend on the information supplied by the API.
 
 ---
 
@@ -566,23 +444,17 @@ BazarDor includes reusable components for loading states and toast notifications
 
 ### Loading Feedback
 
-Loading components are available for:
-
-- The homepage
-- Category pages
-- Product detail pages
+Loading components are available for the homepage, category pages, and product detail pages.
 
 ### Toast Notifications
 
-The `ToastProvider.tsx` component provides the toast notification integration used by the application.
+The `ToastProvider.tsx` component provides toast notification integration throughout the application.
 
-These interface elements help communicate application status and user feedback.
+These elements help communicate application status and user feedback.
 
 ---
 
 ## 🎯 Project Highlights
-
-BazarDor brings together several features to make market-price information easier to explore:
 
 - Dynamic product listings
 - Category-based browsing
@@ -609,7 +481,7 @@ BazarDor brings together several features to make market-price information easie
 
 **Bholanath Bala**
 
-- **GitHub:** [bhola16](https://github.com/bhola16)
+- **GitHub:** [@bhola16](https://github.com/bhola16)
 - **Project Repository:** [BazarDor](https://github.com/bhola16/bazar-dor)
 - **Live Demo:** [bazar-dor-kohl.vercel.app](https://bazar-dor-kohl.vercel.app/)
 

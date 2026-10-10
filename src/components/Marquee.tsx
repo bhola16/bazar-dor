@@ -20,7 +20,7 @@ const Marquee = async () => {
 
   return (
     <div className="relative z-0 isolate overflow-hidden border-y border-gray-200 bg-white transition-colors duration-300">
-      <MarqueeText duration={40} direction="right">
+      <MarqueeText duration={30} direction="right">
         <div className="flex items-center">
           {data.map((product) => {
             const unit = unitInBangla[product.unit] || product.unit;

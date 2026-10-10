@@ -25,6 +25,7 @@ const UserInfoPage = () => {
       return;
     }
 
+    setIsOpen(false);
     toast.success("সফলভাবে সাইন আউট হয়েছে।");
     router.push("/?auth=signed-out");
   };
@@ -67,7 +68,7 @@ const UserInfoPage = () => {
             onClick={() => setIsOpen((prev) => !prev)}
             aria-expanded={isOpen}
             aria-haspopup="true"
-            className={`group flex items-center gap-2 rounded-xl p-2 transition-all duration-300 ${
+            className={`group flex max-w-full items-center gap-1 rounded-xl p-1.5 transition-all duration-300 sm:gap-2 sm:p-2 ${
               isOpen
                 ? "bg-green-50 shadow-sm"
                 : "hover:bg-green-50 hover:shadow-sm"
@@ -80,20 +81,20 @@ const UserInfoPage = () => {
                 alt={user.name || "প্রোফাইল ছবি"}
                 width={40}
                 height={40}
-                className="h-10 w-10 rounded-full object-cover ring-2 ring-green-600 transition-all duration-300 group-hover:scale-105 group-hover:ring-4 group-hover:ring-green-200"
+                className="h-9 w-9 shrink-0 rounded-full object-cover ring-2 ring-green-600 transition-all duration-300 group-hover:scale-105 group-hover:ring-4 group-hover:ring-green-200 sm:h-10 sm:w-10"
               />
             ) : (
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-600 font-bold text-white ring-2 ring-transparent transition-all duration-300 group-hover:scale-105 group-hover:ring-4 group-hover:ring-green-200">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-green-600 font-bold text-white ring-2 ring-transparent transition-all duration-300 group-hover:scale-105 group-hover:ring-4 group-hover:ring-green-200 sm:h-10 sm:w-10">
                 {user.name?.charAt(0).toUpperCase() || "U"}
               </div>
             )}
 
-            <span className="max-w-28 truncate text-sm font-semibold text-gray-800 transition-colors duration-300 group-hover:text-green-700 sm:max-w-36">
+            <span className="max-w-16 truncate text-xs font-semibold text-gray-800 transition-colors duration-300 group-hover:text-green-700 sm:max-w-36 sm:text-sm">
               {user.name || "ব্যবহারকারী"}
             </span>
 
             <FaChevronDown
-              className={`h-3 w-3 text-gray-500 transition-all duration-300 group-hover:text-green-600 ${
+              className={`h-3 w-3 shrink-0 text-gray-500 transition-all duration-300 group-hover:text-green-600 ${
                 isOpen ? "rotate-180 text-green-600" : ""
               }`}
             />
@@ -101,7 +102,7 @@ const UserInfoPage = () => {
 
           {/* Dropdown Menu */}
           <div
-            className={`absolute right-0 top-full z-[120] mt-2 w-64 origin-top-right overflow-hidden rounded-xl border border-gray-100 bg-white shadow-xl transition-all duration-200 ease-out ${
+            className={`absolute right-0 top-full z-[120] mt-2 w-64 max-w-[calc(100vw-1.5rem)] origin-top-right overflow-hidden rounded-xl border border-gray-100 bg-white shadow-xl transition-all duration-200 ease-out ${
               isOpen
                 ? "visible translate-y-0 scale-100 opacity-100"
                 : "invisible -translate-y-2 scale-95 opacity-0"
@@ -117,7 +118,7 @@ const UserInfoPage = () => {
                     alt={user.name || "প্রোফাইল ছবি"}
                     width={40}
                     height={40}
-                    className="h-10 w-10 rounded-full object-cover ring-2 ring-green-500 transition-transform duration-300 group-hover/details:scale-105"
+                    className="h-10 w-10 shrink-0 rounded-full object-cover ring-2 ring-green-500 transition-transform duration-300 group-hover/details:scale-105"
                   />
                 ) : (
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-600 font-bold text-white transition-transform duration-300 group-hover/details:scale-105">
@@ -143,7 +144,7 @@ const UserInfoPage = () => {
               onClick={() => setIsOpen(false)}
               className="group flex items-center gap-3 border-b border-gray-100 px-4 py-3 text-sm font-medium text-gray-700 transition-all duration-200 hover:bg-green-50 hover:pl-6 hover:text-green-700 focus-visible:bg-green-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-green-500"
             >
-              <FaUser className="h-4 w-4 text-gray-400 transition-all duration-200 group-hover:scale-110 group-hover:text-green-600" />
+              <FaUser className="h-4 w-4 shrink-0 text-gray-400 transition-all duration-200 group-hover:scale-110 group-hover:text-green-600" />
               <span>আমার প্রোফাইল</span>
             </Link>
 
@@ -154,23 +155,23 @@ const UserInfoPage = () => {
               onClick={handleSignOut}
               className="group/signout flex w-full items-center gap-3 px-4 py-3 text-sm font-medium text-red-500 transition-all duration-200 hover:bg-red-50 hover:pl-6 hover:text-red-700 focus-visible:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-red-500"
             >
-              <FaArrowTurnDown className="h-4 w-4 rotate-90 transition-transform duration-200 group-hover/signout:translate-x-1" />
+              <FaArrowTurnDown className="h-4 w-4 shrink-0 rotate-90 transition-transform duration-200 group-hover/signout:translate-x-1" />
               <span>সাইন আউট</span>
             </button>
           </div>
         </div>
       ) : (
-        <div className="flex gap-2">
+        <div className="flex items-center gap-1 sm:gap-2">
           <Link
             href="/signin"
-            className="btn btn-md border-0 bg-white text-md text-gray-700 transition-all duration-300 hover:-translate-y-0.5 hover:bg-green-50 hover:text-green-700 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2"
+            className="btn btn-sm border-0 bg-white px-2 text-xs text-gray-700 transition-all duration-300 hover:-translate-y-0.5 hover:bg-green-50 hover:text-green-700 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2 sm:btn-md sm:px-4 sm:text-sm"
           >
             সাইন ইন
           </Link>
 
           <Link
             href="/signup"
-            className="btn btn-md border-green-600 bg-green-600 text-md text-white transition-all duration-300 hover:-translate-y-0.5 hover:border-green-700 hover:bg-green-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2"
+            className="btn btn-sm border-green-600 bg-green-600 px-2 text-xs text-white transition-all duration-300 hover:-translate-y-0.5 hover:border-green-700 hover:bg-green-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2 sm:btn-md sm:px-4 sm:text-sm"
           >
             সাইন আপ
           </Link>
