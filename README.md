@@ -184,7 +184,8 @@ BazarDor uses a REST API to retrieve product and category information.
 
 **Base API URL:**
 
-`https://api.api-store.workers.dev/api/bazardor`
+`https://api.api-store.workers.dev/api/bazardor` (Sometime not working)
+`https://api.abcz.workers.dev/api/bazardor` (This project used it)
 
 The API provides product and category data used throughout the application. The availability and completeness of market-price information depend on the API response.
 
