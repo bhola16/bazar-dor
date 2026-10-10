@@ -137,7 +137,7 @@ const ProductDetailsPage = async ({ params }: ProductDetailsPageProps) => {
 
           {/* Today's Price */}
           <div className="m-4 flex flex-col items-center justify-center rounded-2xl bg-green-50 p-5 text-center transition-all duration-300 hover:scale-[1.02] hover:bg-green-100 hover:shadow-inner">
-            <p className="text-sm text-gray-500 transition-colors duration-300 hover:text-green-700">
+            <p className="text-sm font-semibold text-gray-500 transition-colors duration-300 hover:text-green-700">
               আজকের দাম
             </p>
 
@@ -145,9 +145,11 @@ const ProductDetailsPage = async ({ params }: ProductDetailsPageProps) => {
               {product.today.toLocaleString("bn-BD")}
             </p>
 
-            <p className="text-sm text-gray-500">টাকা/{unit}</p>
+            <p className="text-sm mt-1 font-semibold text-gray-500">
+              টাকা / {unit}
+            </p>
 
-            <div className="mt-2">
+            <div className="mt-1">
               {product.change.dir === "up" && (
                 <p className="font-semibold text-red-600 transition-transform duration-300 hover:scale-110">
                   ▲ {product.change.pct.toLocaleString("bn-BD")}%
@@ -227,11 +229,11 @@ const ProductDetailsPage = async ({ params }: ProductDetailsPageProps) => {
             </p>
           </div>
         </div>
-      </div>
 
-      {/* Market-wise Today's Prices */}
-      <div className="transition-all duration-300">
-        <MarketPriceTable markets={markets} />
+        {/* Market-wise Today's Prices */}
+        <div className="transition-all duration-300">
+          <MarketPriceTable markets={markets} />
+        </div>
       </div>
     </section>
   );

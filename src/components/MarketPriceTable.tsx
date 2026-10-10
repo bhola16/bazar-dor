@@ -18,7 +18,7 @@ const MarketPriceTable = ({ markets }: MarketPriceTableProps) => {
       </h2>
 
       {/* Table */}
-      <div className="mt-6 overflow-x-auto rounded-xl border border-gray-200 transition-all duration-300 hover:border-green-200 hover:shadow-md">
+      <div className="mt-5 overflow-x-auto rounded-xl border border-gray-200 transition-all duration-300 hover:border-green-200 hover:shadow-md">
         <table className="w-full min-w-[650px] border-collapse text-left">
           <thead className="bg-white text-md text-black">
             <tr className="border-b-2 border-zinc-200">
