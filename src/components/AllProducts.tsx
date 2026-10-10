@@ -5,7 +5,7 @@ const AllProducts = async () => {
   "use cache";
 
   const res = await fetch(
-    "https://api.api-store.workers.dev/api/bazardor/products",
+    "https://api.abcz.workers.dev/api/bazardor/products",
   );
 
   const data: IProduct[] = await res.json();
