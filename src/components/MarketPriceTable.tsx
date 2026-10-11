@@ -1,3 +1,4 @@
+
 "use client";
 
 import { IMarket } from "@/type/Type";
@@ -19,7 +20,7 @@ const MarketPriceTable = ({ markets }: MarketPriceTableProps) => {
 
       {/* Table */}
       <div className="mt-5 overflow-x-auto rounded-xl border border-gray-200 transition-all duration-300 hover:border-green-200 hover:shadow-md">
-        <table className="w-full min-w-[650px] border-collapse text-left">
+        <table className="w-full min-w-162.5 border-collapse text-left">
           <thead className="bg-white text-md text-black">
             <tr className="border-b-2 border-zinc-200">
               <th className="px-5 py-4 font-bold transition-colors duration-300 hover:bg-green-50 hover:text-green-700">
