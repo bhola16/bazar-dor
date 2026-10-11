@@ -129,7 +129,7 @@ const MarketPlaceCostTable = ({ markets }: MarketPriceTableProps) => {
       {/* Selected Market */}
       {selectedMarket !== null && (
         <p
-          className="mt-3 rounded-lg bg-green-50 px-4 py-3 text-sm text-gray-600 transition-all duration-300 hover:bg-green-100 hover:text-green-800"
+          className="mt-3 rounded-lg bg-green-50 px-4 py-3 text-md text-gray-600 transition-all duration-300 hover:bg-green-100 hover:text-green-800"
           aria-live="polite"
         >
           <span className="font-semibold text-green-700 transition-colors duration-300 hover:text-green-900">
