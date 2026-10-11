@@ -27,7 +27,7 @@ const NavlinksClient = ({ categories }: NavlinksClientProps) => {
                 aria-current={isActive ? "page" : undefined}
                 className={`group relative flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 sm:px-4 ${
                   isActive
-                    ? "bg-green-100 text-green-800 shadow-sm"
+                    ? "bg-green-200 text-green-800 shadow-sm"
                     : "text-gray-600 hover:bg-green-50 hover:text-green-700 hover:shadow-sm"
                 }`}
               >

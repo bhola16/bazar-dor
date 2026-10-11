@@ -141,7 +141,6 @@ const MarketPriceTable = ({ markets }: MarketPriceTableProps) => {
                 selectedMarket,
             )?.market
           }
-          
         </p>
       )}
     </section>
