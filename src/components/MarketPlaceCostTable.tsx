@@ -8,7 +8,7 @@ interface MarketPriceTableProps {
   markets: IMarket[];
 }
 
-const MarketPriceTable = ({ markets }: MarketPriceTableProps) => {
+const MarketPlaceCostTable = ({ markets }: MarketPriceTableProps) => {
   const [selectedMarket, setSelectedMarket] = useState<string | null>(null);
 
   return (
@@ -148,4 +148,4 @@ const MarketPriceTable = ({ markets }: MarketPriceTableProps) => {
   );
 };
 
-export default MarketPriceTable;
+export default MarketPlaceCostTable;

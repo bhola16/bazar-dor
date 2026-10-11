@@ -1,4 +1,4 @@
-import MarketPriceTable from "@/components/MarketPriceTable";
+import MarketPlaceCostTable from "@/components/MarketPlaceCostTable";
 import { IMarket, IProduct, ProductDetailsPageProps } from "@/type/Type";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -232,7 +232,7 @@ const ProductDetailsPage = async ({ params }: ProductDetailsPageProps) => {
 
         {/* Market-wise Today's Prices */}
         <div className="transition-all duration-300">
-          <MarketPriceTable markets={markets} />
+          <MarketPlaceCostTable markets={markets} />
         </div>
       </div>
     </section>
